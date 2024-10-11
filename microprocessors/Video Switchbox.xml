@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Video switchbox" description="No description set." width="2" length="2" id_counter="10" id_counter_node="4" sym1="8184" sym2="384" sym3="32766" sym4="16386" sym5="16386" sym6="16386" sym7="16386" sym8="16386" sym9="16386" sym10="16386" sym11="16386" sym12="16386" sym13="16386" sym14="32766">
+	<nodes>
+		<n id="1" component_id="3">
+			<node label="Video 1" mode="1" type="6" description="The input signal to be processed."/>
+		</n>
+		<n id="2" component_id="5">
+			<node label="Video 2" mode="1" type="6" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="3" component_id="6">
+			<node label="Switch" mode="1" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="4" component_id="10">
+			<node label="Output Video" type="6" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="57">
+				<object id="1">
+					<pos x="-5.5" y="1.25"/>
+					<in1 component_id="5"/>
+					<in2 component_id="3"/>
+					<in3 component_id="6"/>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="6">
+				<object id="3">
+					<pos x="-7" y="1.5"/>
+				</object>
+			</c>
+			<c type="6">
+				<object id="5">
+					<pos x="-7" y="2"/>
+				</object>
+			</c>
+			<c>
+				<object id="6">
+					<pos x="-7" y="1"/>
+				</object>
+			</c>
+			<c type="7">
+				<object id="10">
+					<pos x="-4" y="1.75"/>
+					<in1 component_id="1"/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="1">
+				<pos x="-5.5" y="1.25"/>
+				<in1 component_id="5"/>
+				<in2 component_id="3"/>
+				<in3 component_id="6"/>
+			</c0>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="3">
+				<pos x="-7" y="1.5"/>
+			</c0>
+			<c1 id="5">
+				<pos x="-7" y="2"/>
+			</c1>
+			<c2 id="6">
+				<pos x="-7" y="1"/>
+			</c2>
+			<c3 id="10">
+				<pos x="-4" y="1.75"/>
+				<in1 component_id="1"/>
+			</c3>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

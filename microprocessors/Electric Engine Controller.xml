@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Electric Engine Input Controller" description="A micro to control motors and engines" width="3" length="2" id_counter="23" id_counter_node="7" sym1="4088" sym2="4088" sym3="24" sym4="24" sym5="24" sym6="24" sym7="4088" sym8="4088" sym9="4088" sym10="24" sym11="24" sym12="24" sym13="4088" sym14="4088">
+	<nodes>
+		<n id="1" component_id="2">
+			<node label="W/S" mode="1" type="1" description="The input signal to be processed."/>
+		</n>
+		<n id="2" component_id="4">
+			<node label="UP/DOWN" mode="1" type="1" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="3" component_id="7">
+			<node label="Motor Clutch" type="1" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="4" component_id="10">
+			<node label="Engine RPS" type="1" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+		<n id="5" component_id="16">
+			<node label="Reverse" mode="1" description="The input signal to be processed.">
+				<position x="2"/>
+			</node>
+		</n>
+		<n id="7" component_id="23">
+			<node label="Engine RPS" mode="1" type="1" description="The input signal to be processed.">
+				<position x="2" z="1"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="11" script="reverse = false
+motor = 0
+rps = 0
+engineRpsInput = 0
+function onTick()
+	inputMotor = input.getNumber(1)
+	inputRps = input.getNumber(2)
+	engineRpsInput = input.getNumber(3)
+	reverse = input.getBool(1)
+	
+	if inputMotor &gt; 0 then motor = motor + 0.01
+	elseif inputMotor &lt; 0 then motor = motor - 0.01 end
+		
+	if reverse == false then
+		motor = clamp(motor, 0, 1)
+	else
+		motor = clamp(motor, -1, 0)
+	end
+	
+	if engineRpsInput &gt; 0 then
+		if inputRps &gt; 0 then
+			rps = rps + 0.01
+		elseif inputRps &lt; 0 then
+			rps = rps - 0.01
+		end
+	end
+	
+	rps = clamp(rps, 0, 1)
+		
+	output.setNumber(1, motor)
+	output.setNumber(2, rps)
+end
+	
+function clamp(numberToClamp, min, max)
+	if numberToClamp &gt; max then return max
+	elseif numberToClamp &lt; min then return min
+	else return numberToClamp end
+end">
+					<pos x="1.75" y="-0.5"/>
+					<in1 component_id="14">
+						<v/>
+					</in1>
+					<in2>
+						<v/>
+					</in2>
+					<out1>
+						<v 01="0.49" 02="0.42"/>
+					</out1>
+					<out2>
+						<v/>
+					</out2>
+				</object>
+			</c>
+			<c type="31">
+				<object id="13">
+					<pos x="3.25" y="-0.25"/>
+					<in1 component_id="11">
+						<v 01="0.49" 02="0.42"/>
+					</in1>
+					<out1 v="0.49"/>
+				</object>
+			</c>
+			<c type="40">
+				<object id="14" count="3">
+					<pos x="0.25" y="-0.25"/>
+					<inc component_id="17">
+						<v/>
+					</inc>
+					<in1 component_id="2"/>
+					<in2 component_id="4"/>
+					<in3 component_id="23"/>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="15" i="1">
+					<pos x="3.25" y="-0.75"/>
+					<in1 component_id="11">
+						<v 01="0.49" 02="0.42"/>
+					</in1>
+					<out1 v="0.42"/>
+				</object>
+			</c>
+			<c type="41">
+				<object id="17" count="1">
+					<pos x="0.25" y="-1.5"/>
+					<inc>
+						<v/>
+					</inc>
+					<in1 component_id="16"/>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="2">
+				<object id="2">
+					<pos x="-1.25" y="0.5"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="4">
+					<pos x="-1.25"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="7">
+					<pos x="4.5" y="-0.25"/>
+					<in1 component_id="13" v="0.49"/>
+					<out1 v="0.49"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="10">
+					<pos x="4.5" y="-0.75"/>
+					<in1 component_id="15" v="0.42"/>
+					<out1 v="0.42"/>
+				</object>
+			</c>
+			<c>
+				<object id="16">
+					<pos x="-1.25" y="-1.5"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="23">
+					<pos x="-1.25" y="-0.5"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="11" script="reverse = false
+motor = 0
+rps = 0
+engineRpsInput = 0
+function onTick()
+	inputMotor = input.getNumber(1)
+	inputRps = input.getNumber(2)
+	engineRpsInput = input.getNumber(3)
+	reverse = input.getBool(1)
+	
+	if inputMotor &gt; 0 then motor = motor + 0.01
+	elseif inputMotor &lt; 0 then motor = motor - 0.01 end
+		
+	if reverse == false then
+		motor = clamp(motor, 0, 1)
+	else
+		motor = clamp(motor, -1, 0)
+	end
+	
+	if engineRpsInput &gt; 0 then
+		if inputRps &gt; 0 then
+			rps = rps + 0.01
+		elseif inputRps &lt; 0 then
+			rps = rps - 0.01
+		end
+	end
+	
+	rps = clamp(rps, 0, 1)
+		
+	output.setNumber(1, motor)
+	output.setNumber(2, rps)
+end
+	
+function clamp(numberToClamp, min, max)
+	if numberToClamp &gt; max then return max
+	elseif numberToClamp &lt; min then return min
+	else return numberToClamp end
+end">
+				<pos x="1.75" y="-0.5"/>
+				<in1 component_id="14">
+					<v/>
+				</in1>
+				<in2>
+					<v/>
+				</in2>
+				<out1>
+					<v 01="0.49" 02="0.42"/>
+				</out1>
+				<out2>
+					<v/>
+				</out2>
+			</c0>
+			<c1 id="13">
+				<pos x="3.25" y="-0.25"/>
+				<in1 component_id="11">
+					<v 01="0.49" 02="0.42"/>
+				</in1>
+				<out1 v="0.49"/>
+			</c1>
+			<c2 id="14" count="3">
+				<pos x="0.25" y="-0.25"/>
+				<inc component_id="17">
+					<v/>
+				</inc>
+				<in1 component_id="2"/>
+				<in2 component_id="4"/>
+				<in3 component_id="23"/>
+				<out1>
+					<v/>
+				</out1>
+			</c2>
+			<c3 id="15" i="1">
+				<pos x="3.25" y="-0.75"/>
+				<in1 component_id="11">
+					<v 01="0.49" 02="0.42"/>
+				</in1>
+				<out1 v="0.42"/>
+			</c3>
+			<c4 id="17" count="1">
+				<pos x="0.25" y="-1.5"/>
+				<inc>
+					<v/>
+				</inc>
+				<in1 component_id="16"/>
+				<out1>
+					<v/>
+				</out1>
+			</c4>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="2">
+				<pos x="-1.25" y="0.5"/>
+				<in1/>
+				<out1/>
+			</c0>
+			<c1 id="4">
+				<pos x="-1.25"/>
+				<in1/>
+				<out1/>
+			</c1>
+			<c2 id="7">
+				<pos x="4.5" y="-0.25"/>
+				<in1 component_id="13" v="0.49"/>
+				<out1 v="0.49"/>
+			</c2>
+			<c3 id="10">
+				<pos x="4.5" y="-0.75"/>
+				<in1 component_id="15" v="0.42"/>
+				<out1 v="0.42"/>
+			</c3>
+			<c4 id="16">
+				<pos x="-1.25" y="-1.5"/>
+				<in1/>
+				<out1/>
+			</c4>
+			<c5 id="23">
+				<pos x="-1.25" y="-0.5"/>
+				<in1/>
+				<out1/>
+			</c5>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

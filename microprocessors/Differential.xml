@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Microcontroller" description="No description set." width="2" length="5" id_counter="56" id_counter_node="10">
+	<nodes>
+		<n id="1" component_id="15">
+			<node label="rpm1" mode="1" type="1" description="The input signal to be processed."/>
+		</n>
+		<n id="2" component_id="16">
+			<node label="rpm2" mode="1" type="1" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="3" component_id="17">
+			<node label="rpm3" mode="1" type="1" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="4" component_id="18">
+			<node label="rpm4" mode="1" type="1" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+		<n id="5" component_id="44">
+			<node label="clutch1" type="1" description="The input signal to be processed.">
+				<position x="1" z="3"/>
+			</node>
+		</n>
+		<n id="6" component_id="43">
+			<node label="clutch2" type="1" description="The input signal to be processed.">
+				<position z="3"/>
+			</node>
+		</n>
+		<n id="7" component_id="42">
+			<node label="clutch3" type="1" description="The input signal to be processed.">
+				<position x="1" z="2"/>
+			</node>
+		</n>
+		<n id="8" component_id="41">
+			<node label="clutch4" type="1" description="The input signal to be processed.">
+				<position z="2"/>
+			</node>
+		</n>
+		<n id="9" component_id="54">
+			<node label="Video" type="6" description="The input signal to be processed.">
+				<position z="4"/>
+			</node>
+		</n>
+		<n id="10" component_id="55">
+			<node label="Toggle" mode="1" description="The input signal to be processed.">
+				<position x="1" z="4"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="23" script='-- Central Controller Microcontroller Script
+
+threshold = property.getNumber("Threshold") -- This is the threshold above which we will start to reduce power
+max_rpm = property.getNumber("Max RPM") -- This will be updated with the highest RPM that&apos;s been seen
+smallestClutch = 0.5
+avg_rpm = 0
+power1 = 0
+power2 = 0
+power3 = 0
+power4 = 0
+function interpolation(start, finish, perc)
+	return start + ((finish - start) * perc)
+end
+
+function onTick()
+	toggle = input.getBool(1)
+	if not toggle then
+		output.setNumber(1, 1)
+		output.setNumber(2, 1)
+		output.setNumber(3, 1)
+		output.setNumber(4, 1)
+		return
+	end
+
+  -- Get the current RPM of each wheel
+	local rpm1 = input.getNumber(1)
+	local rpm2 = input.getNumber(2)
+	local rpm3 = input.getNumber(3)
+	local rpm4 = input.getNumber(4)
+
+  -- Update max_rpm if any of the current RPMs is higher
+  max_rpm = math.max(max_rpm, rpm1, rpm2, rpm3, rpm4)
+	currentMaxRpm = math.max(rpm1, rpm2, rpm3, rpm4)
+	currentMinRpm = math.min(rpm1, rpm2, rpm3, rpm4)
+  -- Calculate the average RPM of all wheels
+  avg_rpm = (rpm1 + rpm2 + rpm3 + rpm4) / 4
+	temp1 = currentMaxRpm - avg_rpm
+	temp2 = avg_rpm - currentMinRpm
+
+	biggestDiff = 0
+	if temp1 &gt; temp2 then biggestDiff = temp1
+	else biggestDiff = temp2 end
+	
+	
+
+  -- Set the power to each wheel based on its RPM compared to the average RPM
+	power1 = interpolation(0.5, 1, ((avg_rpm - rpm1) / biggestDiff))
+	power2 = interpolation(0.5, 1, ((avg_rpm - rpm2) / biggestDiff))
+	power3 = interpolation(0.5, 1, ((avg_rpm - rpm3) / biggestDiff))
+	power4 = interpolation(0.5, 1, ((avg_rpm - rpm4) / biggestDiff))
+
+  -- Output the power to each wheel&apos;s clutch using composite number write nodes
+  output.setNumber(1, power1)
+  output.setNumber(2, power2)
+  output.setNumber(3, power3)
+  output.setNumber(4, power4)
+end
+
+function onDraw()
+	w = screen.getWidth()
+	h = screen.getHeight()
+	screen.setColor(255, 255, 255)
+	
+	screen.drawText(0, 0, power1)
+	screen.drawText(0, 6, power2)
+	screen.drawText(0, 12, power3)
+	screen.drawText(0, 18, power4)
+	
+	screen.drawText(0, 24, "Avg. " .. avg_rpm)
+	screen.drawText(0, 30, "Max  " .. max_rpm)
+end
+'>
+					<pos x="1.75" y="0.25"/>
+					<in1 component_id="56"/>
+					<out1>
+						<v 01="1" 02="1" 03="1" 04="1"/>
+					</out1>
+				</object>
+			</c>
+			<c type="40">
+				<object id="26" count="4">
+					<pos x="-1" y="-0.25"/>
+					<in1 component_id="15"/>
+					<in2 component_id="16"/>
+					<in3 component_id="17"/>
+					<in4 component_id="18"/>
+				</object>
+			</c>
+			<c type="31">
+				<object id="32">
+					<pos x="3.25" y="1.25"/>
+					<in1 component_id="23">
+						<v 01="1" 02="1" 03="1" 04="1"/>
+					</in1>
+					<out1 v="1"/>
+				</object>
+			</c>
+			<c type="31">
+				<object id="45" i="1">
+					<pos x="3.25" y="0.75"/>
+					<in1 component_id="23">
+						<v 01="1" 02="1" 03="1" 04="1"/>
+					</in1>
+					<out1 v="1"/>
+				</object>
+			</c>
+			<c type="31">
+				<object id="46" i="2">
+					<pos x="3.25" y="0.25"/>
+					<in1 component_id="23">
+						<v 01="1" 02="1" 03="1" 04="1"/>
+					</in1>
+					<out1 v="1"/>
+				</object>
+			</c>
+			<c type="31">
+				<object id="47" i="3">
+					<pos x="3.25" y="-0.25"/>
+					<in1 component_id="23">
+						<v 01="1" 02="1" 03="1" 04="1"/>
+					</in1>
+					<out1 v="1"/>
+				</object>
+			</c>
+			<c type="34">
+				<object id="50" n="Threshold">
+					<pos x="-1" y="2.75"/>
+					<v text="0"/>
+				</object>
+			</c>
+			<c type="34">
+				<object id="51" n="Max RPM">
+					<pos x="-1" y="2.25"/>
+					<v text="0"/>
+				</object>
+			</c>
+			<c type="41">
+				<object id="56" count="1">
+					<pos x="0.5" y="0.75"/>
+					<inc component_id="26"/>
+					<in1 component_id="55"/>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="2">
+				<object id="15">
+					<pos x="-2.5" y="1"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="16">
+					<pos x="-2.5" y="0.5"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="17">
+					<pos x="-2.5"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="18">
+					<pos x="-2.5" y="-0.5"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="41">
+					<pos x="4.75"/>
+					<in1 component_id="47" v="1"/>
+					<out1 v="1"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="42">
+					<pos x="4.75" y="0.5"/>
+					<in1 component_id="46" v="1"/>
+					<out1 v="1"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="43">
+					<pos x="4.75" y="1"/>
+					<in1 component_id="45" v="1"/>
+					<out1 v="1"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="44">
+					<pos x="4.75" y="1.5"/>
+					<in1 component_id="32" v="1"/>
+					<out1 v="1"/>
+				</object>
+			</c>
+			<c type="7">
+				<object id="54">
+					<pos x="3.25" y="-1"/>
+					<in1 component_id="23" node_index="1"/>
+				</object>
+			</c>
+			<c>
+				<object id="55">
+					<pos y="-2"/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="23" script='-- Central Controller Microcontroller Script
+
+threshold = property.getNumber("Threshold") -- This is the threshold above which we will start to reduce power
+max_rpm = property.getNumber("Max RPM") -- This will be updated with the highest RPM that&apos;s been seen
+smallestClutch = 0.5
+avg_rpm = 0
+power1 = 0
+power2 = 0
+power3 = 0
+power4 = 0
+function interpolation(start, finish, perc)
+	return start + ((finish - start) * perc)
+end
+
+function onTick()
+	toggle = input.getBool(1)
+	if not toggle then
+		output.setNumber(1, 1)
+		output.setNumber(2, 1)
+		output.setNumber(3, 1)
+		output.setNumber(4, 1)
+		return
+	end
+
+  -- Get the current RPM of each wheel
+	local rpm1 = input.getNumber(1)
+	local rpm2 = input.getNumber(2)
+	local rpm3 = input.getNumber(3)
+	local rpm4 = input.getNumber(4)
+
+  -- Update max_rpm if any of the current RPMs is higher
+  max_rpm = math.max(max_rpm, rpm1, rpm2, rpm3, rpm4)
+	currentMaxRpm = math.max(rpm1, rpm2, rpm3, rpm4)
+	currentMinRpm = math.min(rpm1, rpm2, rpm3, rpm4)
+  -- Calculate the average RPM of all wheels
+  avg_rpm = (rpm1 + rpm2 + rpm3 + rpm4) / 4
+	temp1 = currentMaxRpm - avg_rpm
+	temp2 = avg_rpm - currentMinRpm
+
+	biggestDiff = 0
+	if temp1 &gt; temp2 then biggestDiff = temp1
+	else biggestDiff = temp2 end
+	
+	
+
+  -- Set the power to each wheel based on its RPM compared to the average RPM
+	power1 = interpolation(0.5, 1, ((avg_rpm - rpm1) / biggestDiff))
+	power2 = interpolation(0.5, 1, ((avg_rpm - rpm2) / biggestDiff))
+	power3 = interpolation(0.5, 1, ((avg_rpm - rpm3) / biggestDiff))
+	power4 = interpolation(0.5, 1, ((avg_rpm - rpm4) / biggestDiff))
+
+  -- Output the power to each wheel&apos;s clutch using composite number write nodes
+  output.setNumber(1, power1)
+  output.setNumber(2, power2)
+  output.setNumber(3, power3)
+  output.setNumber(4, power4)
+end
+
+function onDraw()
+	w = screen.getWidth()
+	h = screen.getHeight()
+	screen.setColor(255, 255, 255)
+	
+	screen.drawText(0, 0, power1)
+	screen.drawText(0, 6, power2)
+	screen.drawText(0, 12, power3)
+	screen.drawText(0, 18, power4)
+	
+	screen.drawText(0, 24, "Avg. " .. avg_rpm)
+	screen.drawText(0, 30, "Max  " .. max_rpm)
+end
+'>
+				<pos x="1.75" y="0.25"/>
+				<in1 component_id="56"/>
+				<out1>
+					<v 01="1" 02="1" 03="1" 04="1"/>
+				</out1>
+			</c0>
+			<c1 id="26" count="4">
+				<pos x="-1" y="-0.25"/>
+				<in1 component_id="15"/>
+				<in2 component_id="16"/>
+				<in3 component_id="17"/>
+				<in4 component_id="18"/>
+			</c1>
+			<c2 id="32">
+				<pos x="3.25" y="1.25"/>
+				<in1 component_id="23">
+					<v 01="1" 02="1" 03="1" 04="1"/>
+				</in1>
+				<out1 v="1"/>
+			</c2>
+			<c3 id="45" i="1">
+				<pos x="3.25" y="0.75"/>
+				<in1 component_id="23">
+					<v 01="1" 02="1" 03="1" 04="1"/>
+				</in1>
+				<out1 v="1"/>
+			</c3>
+			<c4 id="46" i="2">
+				<pos x="3.25" y="0.25"/>
+				<in1 component_id="23">
+					<v 01="1" 02="1" 03="1" 04="1"/>
+				</in1>
+				<out1 v="1"/>
+			</c4>
+			<c5 id="47" i="3">
+				<pos x="3.25" y="-0.25"/>
+				<in1 component_id="23">
+					<v 01="1" 02="1" 03="1" 04="1"/>
+				</in1>
+				<out1 v="1"/>
+			</c5>
+			<c6 id="50" n="Threshold">
+				<pos x="-1" y="2.75"/>
+				<v text="0"/>
+			</c6>
+			<c7 id="51" n="Max RPM">
+				<pos x="-1" y="2.25"/>
+				<v text="0"/>
+			</c7>
+			<c8 id="56" count="1">
+				<pos x="0.5" y="0.75"/>
+				<inc component_id="26"/>
+				<in1 component_id="55"/>
+			</c8>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="15">
+				<pos x="-2.5" y="1"/>
+			</c0>
+			<c1 id="16">
+				<pos x="-2.5" y="0.5"/>
+			</c1>
+			<c2 id="17">
+				<pos x="-2.5"/>
+			</c2>
+			<c3 id="18">
+				<pos x="-2.5" y="-0.5"/>
+			</c3>
+			<c4 id="41">
+				<pos x="4.75"/>
+				<in1 component_id="47" v="1"/>
+				<out1 v="1"/>
+			</c4>
+			<c5 id="42">
+				<pos x="4.75" y="0.5"/>
+				<in1 component_id="46" v="1"/>
+				<out1 v="1"/>
+			</c5>
+			<c6 id="43">
+				<pos x="4.75" y="1"/>
+				<in1 component_id="45" v="1"/>
+				<out1 v="1"/>
+			</c6>
+			<c7 id="44">
+				<pos x="4.75" y="1.5"/>
+				<in1 component_id="32" v="1"/>
+				<out1 v="1"/>
+			</c7>
+			<c8 id="54">
+				<pos x="3.25" y="-1"/>
+				<in1 component_id="23" node_index="1"/>
+			</c8>
+			<c9 id="55">
+				<pos y="-2"/>
+			</c9>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

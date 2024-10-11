@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Auto-Aim (Digital)" description="Micro used for auto aiming at targets" width="4" length="2" id_counter="170" id_counter_node="41" sym0="16384" sym1="57728" sym2="16768" sym3="960" sym4="1632" sym5="3120" sym6="6168" sym7="29070" sym8="29070" sym9="6168" sym10="3120" sym11="1632" sym12="960" sym13="384" sym14="384">
+	<nodes>
+		<n id="2" component_id="4">
+			<node label="Radar Info" mode="1" type="5" description="The input signal to be processed.">
+				<position x="3" z="1"/>
+			</node>
+		</n>
+		<n id="3" component_id="7">
+			<node label="Monitor" type="6" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="19" component_id="88">
+			<node label="Horizontal speed" type="1" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="20" component_id="91">
+			<node label="Vertical speed" type="1" description="The input signal to be processed.">
+				<position x="2"/>
+			</node>
+		</n>
+		<n id="23" component_id="104">
+			<node label="Camera" mode="1" type="6" description="The input signal to be processed."/>
+		</n>
+		<n id="25" component_id="113">
+			<node label="Tilt sensor (Vertical rotation)" mode="1" type="1" description="The input signal to be processed.">
+				<position x="2" z="1"/>
+			</node>
+		</n>
+		<n id="32" component_id="136">
+			<node label="Controls" mode="1" type="5" description="The input signal to be processed.">
+				<position x="3"/>
+			</node>
+		</n>
+		<n id="33" component_id="144">
+			<node label="Ammo left" mode="1" type="1" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="105" script='rotationSpeed = property.getNumber("Rotation Speed")
+ceilLimit = (property.getNumber("Ceiling Limit") / 4) - 0.01
+floorLimit = (property.getNumber("Floor Limit") / 4) - 0.01
+
+fovXsize = 0.2
+fovYsize = 0.2
+cameraAzimuth = 0.095
+cameraElevation = 0.091
+
+compassStarting = -9999
+
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
+function interpolation(start, finish, perc)
+	return start + ((finish - start) * perc)
+end
+
+function clamp(value, min, max)
+	if value &gt; max then return max end
+	if value &lt; min then return min end
+	return value
+end
+
+function rotateGun()
+	horizontalSpeed = azimuth * rotationSpeed * 50
+	verticalSpeed = elevation * rotationSpeed * 50
+end
+
+function onTick()
+	if compassStarting == -9999 then
+		compassStarting = input.getNumber(22)
+	end
+	
+	--Radar inputs
+	targetOnScreen = input.getBool(1)
+	distance = input.getNumber(1)
+	azimuth = round(input.getNumber(2), 3)
+	elevation = round(input.getNumber(3), 3)
+	
+	--Player inputs (starts at 20)
+	lock = input.getBool(2)
+	reset = input.getBool(3)
+	horizontalControl = input.getNumber(20)
+	verticalControl = input.getNumber(21)
+	
+	rotH = input.getNumber(22)
+	rotV = input.getNumber(23)
+	
+	ammoLeft = input.getNumber(24)
+	
+	--averagedAzimuth = input.getNumber(25)
+	--averagedElevation = input.getNumber(26)
+	
+	--Compute if locked on
+	if reset then
+		lock = false
+		desiredH = 0
+		desiredV = 0
+		temp = rotationSpeed
+		rotationSpeed = 0.5
+		rotateGun()
+		rotationSpeed = temp
+	elseif lock and targetOnScreen then
+		--Limit rotations to set boundaries
+		if rotV &gt;= ceilLimit then
+			elevation = 0
+		end
+		if rotV &lt;= floorLimit then
+			rotV = 0
+		end
+	
+		--rotate the gun
+		rotateGun()
+	else
+		horizontalSpeed = rotationSpeed * horizontalControl
+		verticalSpeed = rotationSpeed * verticalControl
+		
+		if rotV &gt;= ceilLimit and verticalSpeed &gt; 0 then verticalSpeed = 0 end
+		if rotV &lt;= floorLimit and verticalSpeed &lt; 0 then verticalSpeed = 0 end
+	end
+
+	output.setNumber(1, horizontalSpeed)
+	output.setNumber(2, verticalSpeed)
+	output.setNumber(3, azimuth)
+	output.setBool(1, targetOnScreen)
+	output.setBool(2, lock)
+end
+
+function onDraw()
+	screen.setColor(255, 255, 255, 50)
+	h = screen.getHeight()
+	w = screen.getWidth()
+	
+	screen.drawCircle(w/2, h/2, 4)
+	
+	screen.setColor(0, 255, 0, 50)
+	--Lines showing horizontal boundaries
+	screen.drawLine(w*(1-fovXsize), 0, w*(1-fovXsize), h)
+	screen.drawLine(w*fovXsize, 0, w*fovXsize, h)
+	
+	--Lines showing vertical boundaries
+	screen.drawLine(0, h*fovYsize, w, h*fovYsize) 
+	screen.drawLine(0, h*(1-fovYsize), w, h*(1-fovYsize))
+	
+	screen.setColor(255, 0, 0)
+	screen.drawText(0, h - 5, ammoLeft)
+	
+	xPerc = (azimuth + cameraAzimuth) / (cameraAzimuth * 2)
+	targetX = interpolation(0, w, xPerc)
+	yPerc = (elevation*(-1) + cameraElevation) / (cameraElevation * 2)
+	targetY = interpolation(0, h, yPerc)
+
+	if targetOnScreen then
+		screen.setColor(255, 0, 0, 100)
+		screen.drawCircle(targetX, targetY, 4)
+		screen.drawTextBox(targetX + 5, targetY + 5, 20, 4, round(distance, 1), -1, 0)
+	end
+end'>
+					<pos x="3.5" y="-1"/>
+					<in1 component_id="123">
+						<v bools="3" 01="4.011905" 02="0.001016" 03="-0.002275" 05="3.658696" 06="-0.000727" 07="0.021014" 09="3.904929" 10="-0.000383" 11="0.0054" 22="0.494892" 23="-0.104904" 25="0.001" 26="-0.005"/>
+					</in1>
+					<in2 component_id="104"/>
+					<out1>
+						<v bools="3" 01="0.05" 02="-0.1" 03="0.001"/>
+					</out1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="107">
+					<pos x="5" y="-0.25"/>
+					<in1 component_id="105">
+						<v bools="3" 01="0.05" 02="-0.05" 03="0.001"/>
+					</in1>
+					<out1 v="0.05"/>
+				</object>
+			</c>
+			<c type="31">
+				<object id="108" i="1">
+					<pos x="5" y="-0.75"/>
+					<in1 component_id="105">
+						<v bools="3" 01="0.05" 02="-0.05" 03="0.001"/>
+					</in1>
+					<out1 v="-0.05"/>
+				</object>
+			</c>
+			<c type="40">
+				<object id="114" count="7" offset="19">
+					<pos x="0.5" y="-2"/>
+					<inc component_id="4">
+						<v bools="7" 01="4.007981" 02="0.000693" 03="-0.000924" 05="3.65384" 06="0.000398" 07="0.02135" 09="3.848884" 10="0.000134" 11="0.005514"/>
+					</inc>
+					<in1 component_id="137"/>
+					<in2 component_id="138"/>
+					<in3 v="0.494762"/>
+					<in4 component_id="113" v="-0.106083"/>
+					<in5 component_id="144"/>
+					<in6 v="0.001"/>
+					<in7 v="-0.005"/>
+					<out1>
+						<v bools="7" 01="4.007981" 02="0.000693" 03="-0.000924" 05="3.65384" 06="0.000398" 07="0.02135" 09="3.848884" 10="0.000134" 11="0.005514" 22="0.494762" 23="-0.106083" 25="0.001" 26="-0.005"/>
+					</out1>
+				</object>
+			</c>
+			<c type="41">
+				<object id="123" count="3">
+					<pos x="2" y="-1"/>
+					<inc component_id="114">
+						<v bools="7" 01="4.006032" 02="0.000498" 03="0.000024" 05="3.670321" 06="0.000917" 07="0.020893" 09="3.846873" 10="0.000746" 11="0.005032" 22="0.494885" 23="-0.105552" 25="0.001" 26="-0.005"/>
+					</inc>
+					<in1 component_id="153" v="true"/>
+					<in2 component_id="139" v="true"/>
+					<in3 component_id="140"/>
+					<out1>
+						<v bools="3" 01="4.006032" 02="0.000498" 03="0.000024" 05="3.670321" 06="0.000917" 07="0.020893" 09="3.846873" 10="0.000746" 11="0.005032" 22="0.494885" 23="-0.105552" 25="0.001" 26="-0.005"/>
+					</out1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="137">
+					<pos x="-1" y="-0.75"/>
+					<in1 component_id="136">
+						<v bools="1"/>
+					</in1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="138" i="1">
+					<pos x="-1" y="-1.25"/>
+					<in1 component_id="136">
+						<v bools="1"/>
+					</in1>
+				</object>
+			</c>
+			<c type="29">
+				<object id="139">
+					<pos x="0.5" y="1"/>
+					<in1 component_id="136">
+						<v bools="1"/>
+					</in1>
+					<out1 v="true"/>
+				</object>
+			</c>
+			<c type="29">
+				<object id="140" i="1">
+					<pos x="0.5" y="0.5"/>
+					<in1 component_id="136">
+						<v bools="1"/>
+					</in1>
+				</object>
+			</c>
+			<c type="19">
+				<object id="141" name="Rotation Speed">
+					<pos x="-3.75" y="0.25"/>
+					<out1 v="1"/>
+					<min text="0.1" value="0.1"/>
+					<max text="3" value="3"/>
+					<int text="0.1" value="0.1"/>
+					<v text="1" value="1"/>
+				</object>
+			</c>
+			<c type="19">
+				<object id="142" name="Ceiling Limit">
+					<pos x="-2.75" y="0.25"/>
+					<out1 v="0.8"/>
+					<min text="0"/>
+					<max text="1" value="1"/>
+					<int text="0.1" value="0.1"/>
+					<v text="0.8" value="0.8"/>
+				</object>
+			</c>
+			<c type="19">
+				<object id="148" name="Floor Limit">
+					<pos x="-2.75" y="-0.25"/>
+					<out1 v="-0.4"/>
+					<min text="0"/>
+					<max text="-1" value="-1"/>
+					<int text="0.1" value="0.1"/>
+					<v text="-0.4" value="-0.4"/>
+				</object>
+			</c>
+			<c type="29">
+				<object id="153">
+					<pos x="0.5" y="1.5"/>
+					<in1 component_id="4">
+						<v bools="7" 01="4.007981" 02="0.000693" 03="-0.000924" 05="3.65384" 06="0.000398" 07="0.02135" 09="3.848884" 10="0.000134" 11="0.005514"/>
+					</in1>
+					<out1 v="true"/>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="4">
+				<object id="4">
+					<pos x="-1" y="-0.25"/>
+					<in1>
+						<v bools="7" 01="4.007981" 02="0.000693" 03="-0.000924" 05="3.65384" 06="0.000398" 07="0.02135" 09="3.848884" 10="0.000134" 11="0.005514"/>
+					</in1>
+					<out1>
+						<v bools="7" 01="4.007981" 02="0.000693" 03="-0.000924" 05="3.65384" 06="0.000398" 07="0.02135" 09="3.848884" 10="0.000134" 11="0.005514"/>
+					</out1>
+				</object>
+			</c>
+			<c type="7">
+				<object id="7">
+					<pos x="5" y="-1.25"/>
+					<in1 component_id="105" node_index="1"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="88">
+					<pos x="6.5" y="-0.25"/>
+					<in1 component_id="107" v="0.05"/>
+					<out1 v="0.05"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="91">
+					<pos x="6.5" y="-0.75"/>
+					<in1 component_id="108" v="-0.05"/>
+					<out1 v="-0.05"/>
+				</object>
+			</c>
+			<c type="6">
+				<object id="104">
+					<pos x="2" y="-2"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="113">
+					<pos x="-1" y="-2.25"/>
+					<in1 v="-0.106083"/>
+					<out1 v="-0.106083"/>
+				</object>
+			</c>
+			<c type="4">
+				<object id="136">
+					<pos x="-3" y="-1.25"/>
+					<in1>
+						<v bools="1"/>
+					</in1>
+					<out1>
+						<v bools="1"/>
+					</out1>
+				</object>
+			</c>
+			<c type="2">
+				<object id="144">
+					<pos x="-1" y="-2.75"/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="105" script='rotationSpeed = property.getNumber("Rotation Speed")
+ceilLimit = (property.getNumber("Ceiling Limit") / 4) - 0.01
+floorLimit = (property.getNumber("Floor Limit") / 4) - 0.01
+
+fovXsize = 0.2
+fovYsize = 0.2
+cameraAzimuth = 0.095
+cameraElevation = 0.091
+
+compassStarting = -9999
+
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
+function interpolation(start, finish, perc)
+	return start + ((finish - start) * perc)
+end
+
+function clamp(value, min, max)
+	if value &gt; max then return max end
+	if value &lt; min then return min end
+	return value
+end
+
+function rotateGun()
+	horizontalSpeed = azimuth * rotationSpeed * 50
+	verticalSpeed = elevation * rotationSpeed * 50
+end
+
+function onTick()
+	if compassStarting == -9999 then
+		compassStarting = input.getNumber(22)
+	end
+	
+	--Radar inputs
+	targetOnScreen = input.getBool(1)
+	distance = input.getNumber(1)
+	azimuth = round(input.getNumber(2), 3)
+	elevation = round(input.getNumber(3), 3)
+	
+	--Player inputs (starts at 20)
+	lock = input.getBool(2)
+	reset = input.getBool(3)
+	horizontalControl = input.getNumber(20)
+	verticalControl = input.getNumber(21)
+	
+	rotH = input.getNumber(22)
+	rotV = input.getNumber(23)
+	
+	ammoLeft = input.getNumber(24)
+	
+	--averagedAzimuth = input.getNumber(25)
+	--averagedElevation = input.getNumber(26)
+	
+	--Compute if locked on
+	if reset then
+		lock = false
+		desiredH = 0
+		desiredV = 0
+		temp = rotationSpeed
+		rotationSpeed = 0.5
+		rotateGun()
+		rotationSpeed = temp
+	elseif lock and targetOnScreen then
+		--Limit rotations to set boundaries
+		if rotV &gt;= ceilLimit then
+			elevation = 0
+		end
+		if rotV &lt;= floorLimit then
+			rotV = 0
+		end
+	
+		--rotate the gun
+		rotateGun()
+	else
+		horizontalSpeed = rotationSpeed * horizontalControl
+		verticalSpeed = rotationSpeed * verticalControl
+		
+		if rotV &gt;= ceilLimit and verticalSpeed &gt; 0 then verticalSpeed = 0 end
+		if rotV &lt;= floorLimit and verticalSpeed &lt; 0 then verticalSpeed = 0 end
+	end
+
+	output.setNumber(1, horizontalSpeed)
+	output.setNumber(2, verticalSpeed)
+	output.setNumber(3, azimuth)
+	output.setBool(1, targetOnScreen)
+	output.setBool(2, lock)
+end
+
+function onDraw()
+	screen.setColor(255, 255, 255, 50)
+	h = screen.getHeight()
+	w = screen.getWidth()
+	
+	screen.drawCircle(w/2, h/2, 4)
+	
+	screen.setColor(0, 255, 0, 50)
+	--Lines showing horizontal boundaries
+	screen.drawLine(w*(1-fovXsize), 0, w*(1-fovXsize), h)
+	screen.drawLine(w*fovXsize, 0, w*fovXsize, h)
+	
+	--Lines showing vertical boundaries
+	screen.drawLine(0, h*fovYsize, w, h*fovYsize) 
+	screen.drawLine(0, h*(1-fovYsize), w, h*(1-fovYsize))
+	
+	screen.setColor(255, 0, 0)
+	screen.drawText(0, h - 5, ammoLeft)
+	
+	xPerc = (azimuth + cameraAzimuth) / (cameraAzimuth * 2)
+	targetX = interpolation(0, w, xPerc)
+	yPerc = (elevation*(-1) + cameraElevation) / (cameraElevation * 2)
+	targetY = interpolation(0, h, yPerc)
+
+	if targetOnScreen then
+		screen.setColor(255, 0, 0, 100)
+		screen.drawCircle(targetX, targetY, 4)
+		screen.drawTextBox(targetX + 5, targetY + 5, 20, 4, round(distance, 1), -1, 0)
+	end
+end'>
+				<pos x="3.5" y="-1"/>
+				<in1 component_id="123">
+					<v bools="3" 01="4.011905" 02="0.001016" 03="-0.002275" 05="3.658696" 06="-0.000727" 07="0.021014" 09="3.904929" 10="-0.000383" 11="0.0054" 22="0.494892" 23="-0.104904" 25="0.001" 26="-0.005"/>
+				</in1>
+				<in2 component_id="104"/>
+				<out1>
+					<v bools="3" 01="0.05" 02="-0.1" 03="0.001"/>
+				</out1>
+			</c0>
+			<c1 id="107">
+				<pos x="5" y="-0.25"/>
+				<in1 component_id="105">
+					<v bools="3" 01="0.05" 02="-0.05" 03="0.001"/>
+				</in1>
+				<out1 v="0.05"/>
+			</c1>
+			<c2 id="108" i="1">
+				<pos x="5" y="-0.75"/>
+				<in1 component_id="105">
+					<v bools="3" 01="0.05" 02="-0.05" 03="0.001"/>
+				</in1>
+				<out1 v="-0.05"/>
+			</c2>
+			<c3 id="114" count="7" offset="19">
+				<pos x="0.5" y="-2"/>
+				<inc component_id="4">
+					<v bools="7" 01="4.007981" 02="0.000693" 03="-0.000924" 05="3.65384" 06="0.000398" 07="0.02135" 09="3.848884" 10="0.000134" 11="0.005514"/>
+				</inc>
+				<in1 component_id="137"/>
+				<in2 component_id="138"/>
+				<in3 v="0.494762"/>
+				<in4 component_id="113" v="-0.106083"/>
+				<in5 component_id="144"/>
+				<in6 v="0.001"/>
+				<in7 v="-0.005"/>
+				<out1>
+					<v bools="7" 01="4.007981" 02="0.000693" 03="-0.000924" 05="3.65384" 06="0.000398" 07="0.02135" 09="3.848884" 10="0.000134" 11="0.005514" 22="0.494762" 23="-0.106083" 25="0.001" 26="-0.005"/>
+				</out1>
+			</c3>
+			<c4 id="123" count="3">
+				<pos x="2" y="-1"/>
+				<inc component_id="114">
+					<v bools="7" 01="4.006032" 02="0.000498" 03="0.000024" 05="3.670321" 06="0.000917" 07="0.020893" 09="3.846873" 10="0.000746" 11="0.005032" 22="0.494885" 23="-0.105552" 25="0.001" 26="-0.005"/>
+				</inc>
+				<in1 component_id="153" v="true"/>
+				<in2 component_id="139" v="true"/>
+				<in3 component_id="140"/>
+				<out1>
+					<v bools="3" 01="4.006032" 02="0.000498" 03="0.000024" 05="3.670321" 06="0.000917" 07="0.020893" 09="3.846873" 10="0.000746" 11="0.005032" 22="0.494885" 23="-0.105552" 25="0.001" 26="-0.005"/>
+				</out1>
+			</c4>
+			<c5 id="137">
+				<pos x="-1" y="-0.75"/>
+				<in1 component_id="136">
+					<v bools="1"/>
+				</in1>
+			</c5>
+			<c6 id="138" i="1">
+				<pos x="-1" y="-1.25"/>
+				<in1 component_id="136">
+					<v bools="1"/>
+				</in1>
+			</c6>
+			<c7 id="139">
+				<pos x="0.5" y="1"/>
+				<in1 component_id="136">
+					<v bools="1"/>
+				</in1>
+				<out1 v="true"/>
+			</c7>
+			<c8 id="140" i="1">
+				<pos x="0.5" y="0.5"/>
+				<in1 component_id="136">
+					<v bools="1"/>
+				</in1>
+			</c8>
+			<c9 id="141" name="Rotation Speed">
+				<pos x="-3.75" y="0.25"/>
+				<out1 v="1"/>
+				<min text="0.1" value="0.1"/>
+				<max text="3" value="3"/>
+				<int text="0.1" value="0.1"/>
+				<v text="1" value="1"/>
+			</c9>
+			<c10 id="142" name="Ceiling Limit">
+				<pos x="-2.75" y="0.25"/>
+				<out1 v="0.8"/>
+				<min text="0"/>
+				<max text="1" value="1"/>
+				<int text="0.1" value="0.1"/>
+				<v text="0.8" value="0.8"/>
+			</c10>
+			<c11 id="148" name="Floor Limit">
+				<pos x="-2.75" y="-0.25"/>
+				<out1 v="-0.4"/>
+				<min text="0"/>
+				<max text="-1" value="-1"/>
+				<int text="0.1" value="0.1"/>
+				<v text="-0.4" value="-0.4"/>
+			</c11>
+			<c12 id="153">
+				<pos x="0.5" y="1.5"/>
+				<in1 component_id="4">
+					<v bools="7" 01="4.007981" 02="0.000693" 03="-0.000924" 05="3.65384" 06="0.000398" 07="0.02135" 09="3.848884" 10="0.000134" 11="0.005514"/>
+				</in1>
+				<out1 v="true"/>
+			</c12>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="4">
+				<pos x="-1" y="-0.25"/>
+				<in1>
+					<v bools="7" 01="4.007981" 02="0.000693" 03="-0.000924" 05="3.65384" 06="0.000398" 07="0.02135" 09="3.848884" 10="0.000134" 11="0.005514"/>
+				</in1>
+				<out1>
+					<v bools="7" 01="4.007981" 02="0.000693" 03="-0.000924" 05="3.65384" 06="0.000398" 07="0.02135" 09="3.848884" 10="0.000134" 11="0.005514"/>
+				</out1>
+			</c0>
+			<c1 id="7">
+				<pos x="5" y="-1.25"/>
+				<in1 component_id="105" node_index="1"/>
+			</c1>
+			<c2 id="88">
+				<pos x="6.5" y="-0.25"/>
+				<in1 component_id="107" v="0.05"/>
+				<out1 v="0.05"/>
+			</c2>
+			<c3 id="91">
+				<pos x="6.5" y="-0.75"/>
+				<in1 component_id="108" v="-0.05"/>
+				<out1 v="-0.05"/>
+			</c3>
+			<c4 id="104">
+				<pos x="2" y="-2"/>
+			</c4>
+			<c5 id="113">
+				<pos x="-1" y="-2.25"/>
+				<in1 v="-0.106083"/>
+				<out1 v="-0.106083"/>
+			</c5>
+			<c6 id="136">
+				<pos x="-3" y="-1.25"/>
+				<in1>
+					<v bools="1"/>
+				</in1>
+				<out1>
+					<v bools="1"/>
+				</out1>
+			</c6>
+			<c7 id="144">
+				<pos x="-1" y="-2.75"/>
+			</c7>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

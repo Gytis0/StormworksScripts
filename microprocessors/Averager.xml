@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Radar Averager" description="Microcontroller, used to average a radar's values over time" width="3" length="1" id_counter="31" id_counter_node="8" sym4="24582" sym5="4104" sym6="16384" sym7="65535" sym8="16384" sym9="1056" sym10="576" sym11="384">
+	<nodes>
+		<n id="5" component_id="18">
+			<node label="Radar info" mode="1" type="5" description="The input signal to be processed."/>
+		</n>
+		<n id="6" component_id="22">
+			<node label="Averaged values" type="5" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="8" component_id="30">
+			<node label="Reset" mode="1" description="The input signal to be processed.">
+				<position x="2"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="9" script='azimuths = {}
+elevations = {}
+iterator = 1
+size = property.getNumber("Ticks To Average")
+
+function getAverage(arr)
+	sum = 0
+	size = 0
+	for i,x in ipairs(arr) do
+		size = i
+		sum = sum + x
+	end
+	
+	return sum / size
+end
+
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
+function onTick()
+	reset = input.getBool(1)
+	
+	if reset then
+		azimuths = {}
+		elevations = {}	
+		iterator = 1
+	end
+	
+	azimuths[iterator] = input.getNumber(2)
+	elevations[iterator] = input.getNumber(3)
+
+	iterator = iterator + 1
+	
+	if iterator &gt; size then
+		output.setNumber(2, getAverage(azimuths))
+		output.setNumber(3, getAverage(elevations))
+		
+		azimuths = {}
+		elevations = {}
+		iterator = 1
+	end
+end'>
+					<pos x="1.25" y="0.25"/>
+					<in1 component_id="31">
+						<v bools="7" 01="9.965503" 02="-0.000026" 03="0.000577" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+					</in1>
+					<out1>
+						<v 02="-0.001"/>
+					</out1>
+				</object>
+			</c>
+			<c type="19">
+				<object id="12" name="Ticks To Average">
+					<pos x="-0.25" y="1.75"/>
+					<out1 v="10"/>
+					<min text="2" value="2"/>
+					<max text="60" value="60"/>
+					<int text="1" value="1"/>
+					<v text="20" value="20"/>
+				</object>
+			</c>
+			<c type="31">
+				<object id="26" i="1">
+					<pos x="2.75" y="0.75"/>
+					<in1 component_id="9">
+						<v 02="-0.001"/>
+					</in1>
+					<out1 v="-0.001"/>
+				</object>
+			</c>
+			<c type="31">
+				<object id="27" i="2">
+					<pos x="2.75" y="0.25"/>
+					<in1 component_id="9">
+						<v 02="-0.001"/>
+					</in1>
+				</object>
+			</c>
+			<c type="40">
+				<object id="29" count="2" offset="1">
+					<pos x="4.5" y="0.25"/>
+					<inc component_id="18">
+						<v bools="7" 01="9.965503" 02="-0.000026" 03="0.000577" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+					</inc>
+					<in1 component_id="26" v="-0.001"/>
+					<in2 component_id="27"/>
+					<out1>
+						<v bools="7" 01="9.965503" 02="-0.001" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+					</out1>
+				</object>
+			</c>
+			<c type="41">
+				<object id="31" count="1">
+					<pos x="-0.25" y="0.25"/>
+					<inc component_id="18"/>
+					<in1 component_id="30"/>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="4">
+				<object id="18">
+					<pos x="-1.5" y="1.25"/>
+					<in1>
+						<v bools="7" 01="9.965503" 02="-0.000026" 03="0.000577" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+					</in1>
+					<out1>
+						<v bools="7" 01="9.965503" 02="-0.000026" 03="0.000577" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+					</out1>
+				</object>
+			</c>
+			<c type="5">
+				<object id="22">
+					<pos x="6.25" y="0.75"/>
+					<in1 component_id="29">
+						<v bools="7" 01="9.965503" 02="-0.001" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+					</in1>
+					<out1>
+						<v bools="7" 01="9.965503" 02="-0.001" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+					</out1>
+				</object>
+			</c>
+			<c>
+				<object id="30">
+					<pos x="-1.75" y="0.25"/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="9" script='azimuths = {}
+elevations = {}
+iterator = 1
+size = property.getNumber("Ticks To Average")
+
+function getAverage(arr)
+	sum = 0
+	size = 0
+	for i,x in ipairs(arr) do
+		size = i
+		sum = sum + x
+	end
+	
+	return sum / size
+end
+
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
+function onTick()
+	reset = input.getBool(1)
+	
+	if reset then
+		azimuths = {}
+		elevations = {}	
+		iterator = 1
+	end
+	
+	azimuths[iterator] = input.getNumber(2)
+	elevations[iterator] = input.getNumber(3)
+
+	iterator = iterator + 1
+	
+	if iterator &gt; size then
+		output.setNumber(2, getAverage(azimuths))
+		output.setNumber(3, getAverage(elevations))
+		
+		azimuths = {}
+		elevations = {}
+		iterator = 1
+	end
+end'>
+				<pos x="1.25" y="0.25"/>
+				<in1 component_id="31">
+					<v bools="7" 01="9.965503" 02="-0.000026" 03="0.000577" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+				</in1>
+				<out1>
+					<v 02="-0.001"/>
+				</out1>
+			</c0>
+			<c1 id="12" name="Ticks To Average">
+				<pos x="-0.25" y="1.75"/>
+				<out1 v="10"/>
+				<min text="2" value="2"/>
+				<max text="60" value="60"/>
+				<int text="1" value="1"/>
+				<v text="20" value="20"/>
+			</c1>
+			<c2 id="26" i="1">
+				<pos x="2.75" y="0.75"/>
+				<in1 component_id="9">
+					<v 02="-0.001"/>
+				</in1>
+				<out1 v="-0.001"/>
+			</c2>
+			<c3 id="27" i="2">
+				<pos x="2.75" y="0.25"/>
+				<in1 component_id="9">
+					<v 02="-0.001"/>
+				</in1>
+			</c3>
+			<c4 id="29" count="2" offset="1">
+				<pos x="4.5" y="0.25"/>
+				<inc component_id="18">
+					<v bools="7" 01="9.965503" 02="-0.000026" 03="0.000577" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+				</inc>
+				<in1 component_id="26" v="-0.001"/>
+				<in2 component_id="27"/>
+				<out1>
+					<v bools="7" 01="9.965503" 02="-0.001" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+				</out1>
+			</c4>
+			<c5 id="31" count="1">
+				<pos x="-0.25" y="0.25"/>
+				<inc component_id="18"/>
+				<in1 component_id="30"/>
+			</c5>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="18">
+				<pos x="-1.5" y="1.25"/>
+				<in1>
+					<v bools="7" 01="9.965503" 02="-0.000026" 03="0.000577" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+				</in1>
+				<out1>
+					<v bools="7" 01="9.965503" 02="-0.000026" 03="0.000577" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+				</out1>
+			</c0>
+			<c1 id="22">
+				<pos x="6.25" y="0.75"/>
+				<in1 component_id="29">
+					<v bools="7" 01="9.965503" 02="-0.001" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+				</in1>
+				<out1>
+					<v bools="7" 01="9.965503" 02="-0.001" 05="9.196464" 06="0.012092" 07="-0.004731" 09="10.394163" 10="0.01174" 11="-0.000437"/>
+				</out1>
+			</c1>
+			<c2 id="30">
+				<pos x="-1.75" y="0.25"/>
+			</c2>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

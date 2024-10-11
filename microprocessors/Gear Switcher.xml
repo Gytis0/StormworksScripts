@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Gear Shifter" description="Used for just shifting the gears up and down" width="2" length="2" id_counter="37" id_counter_node="12" sym0="384" sym1="576" sym2="1440" sym3="2640" sym4="5160" sym5="10644" sym6="4680" sym7="832" sym8="64" sym9="4488" sym10="10260" sym11="5160" sym12="2640" sym13="1440" sym14="576" sym15="384">
+	<nodes>
+		<n id="1" component_id="1">
+			<node label="Gear Up" mode="1" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="2" component_id="2">
+			<node label="Gear Down" mode="1" description="The input signal to be processed."/>
+		</n>
+		<n id="11" component_id="36">
+			<node label="1st Gear" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="12" component_id="37">
+			<node label="2nd Gear" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="7" script="currentGear = 0
+lastUp = false
+lastUp = false
+
+function onTick()
+	currentUp = input.getBool(1)
+	currentDown = input.getBool(2)
+	
+	if(not lastUp and currentUp and currentGear &lt; 2)
+	then
+		currentGear = currentGear + 1
+	elseif(not lastDown and currentDown and currentGear &gt; 0)
+	then
+		currentGear = currentGear - 1
+	end
+	
+	output.setNumber(1, currentGear)
+	
+	lastUp = currentUp
+	lastDown = currentDown
+end">
+					<pos x="1.25" y="-0.75"/>
+					<in1 component_id="9">
+						<v/>
+					</in1>
+					<in2>
+						<v/>
+					</in2>
+					<out1>
+						<v/>
+					</out1>
+					<out2>
+						<v/>
+					</out2>
+				</object>
+			</c>
+			<c type="41">
+				<object id="9" count="2">
+					<pos y="-1.25"/>
+					<inc>
+						<v/>
+					</inc>
+					<in1 component_id="1"/>
+					<in2 component_id="2"/>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="16">
+					<pos x="2.5" y="-0.25"/>
+					<in1 component_id="7">
+						<v/>
+					</in1>
+					<out1/>
+				</object>
+			</c>
+			<c type="17">
+				<object id="18">
+					<pos x="4.25" y="-1.5"/>
+					<in1 component_id="16"/>
+					<in2 component_id="19"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="15">
+				<object id="19">
+					<pos x="2.5" y="-1.5"/>
+					<out1/>
+					<n text="0"/>
+				</object>
+			</c>
+			<c type="17">
+				<object id="20">
+					<pos x="4.25" y="-2.25"/>
+					<in1 component_id="16"/>
+					<in2 component_id="23"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="15">
+				<object id="23">
+					<pos x="2.5" y="-2.25"/>
+					<out1/>
+					<n text="1" value="1"/>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c>
+				<object id="1">
+					<pos x="-1.25" y="-1"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+			<c>
+				<object id="2">
+					<pos x="-1.25" y="-1.5"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+			<c type="1">
+				<object id="36">
+					<pos x="5.25" y="-1.25"/>
+					<in1 component_id="18"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="1">
+				<object id="37">
+					<pos x="5.25" y="-2"/>
+					<in1 component_id="20"/>
+					<out1/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="7" script="currentGear = 0
+lastUp = false
+lastUp = false
+
+function onTick()
+	currentUp = input.getBool(1)
+	currentDown = input.getBool(2)
+	
+	if(not lastUp and currentUp and currentGear &lt; 2)
+	then
+		currentGear = currentGear + 1
+	elseif(not lastDown and currentDown and currentGear &gt; 0)
+	then
+		currentGear = currentGear - 1
+	end
+	
+	output.setNumber(1, currentGear)
+	
+	lastUp = currentUp
+	lastDown = currentDown
+end">
+				<pos x="1.25" y="-0.75"/>
+				<in1 component_id="9">
+					<v/>
+				</in1>
+				<in2>
+					<v/>
+				</in2>
+				<out1>
+					<v/>
+				</out1>
+				<out2>
+					<v/>
+				</out2>
+			</c0>
+			<c1 id="9" count="2">
+				<pos y="-1.25"/>
+				<inc>
+					<v/>
+				</inc>
+				<in1 component_id="1"/>
+				<in2 component_id="2"/>
+				<out1>
+					<v/>
+				</out1>
+			</c1>
+			<c2 id="16">
+				<pos x="2.5" y="-0.25"/>
+				<in1 component_id="7">
+					<v/>
+				</in1>
+				<out1/>
+			</c2>
+			<c3 id="18">
+				<pos x="4.25" y="-1.5"/>
+				<in1 component_id="16"/>
+				<in2 component_id="19"/>
+				<out1/>
+			</c3>
+			<c4 id="19">
+				<pos x="2.5" y="-1.5"/>
+				<out1/>
+				<n text="0"/>
+			</c4>
+			<c5 id="20">
+				<pos x="4.25" y="-2.25"/>
+				<in1 component_id="16"/>
+				<in2 component_id="23"/>
+				<out1/>
+			</c5>
+			<c6 id="23">
+				<pos x="2.5" y="-2.25"/>
+				<out1/>
+				<n text="1" value="1"/>
+			</c6>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="1">
+				<pos x="-1.25" y="-1"/>
+				<in1/>
+				<out1/>
+			</c0>
+			<c1 id="2">
+				<pos x="-1.25" y="-1.5"/>
+				<in1/>
+				<out1/>
+			</c1>
+			<c2 id="36">
+				<pos x="5.25" y="-1.25"/>
+				<in1 component_id="18"/>
+				<out1/>
+			</c2>
+			<c3 id="37">
+				<pos x="5.25" y="-2"/>
+				<in1 component_id="20"/>
+				<out1/>
+			</c3>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

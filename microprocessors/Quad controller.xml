@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Quad Controller" description="A controller made for controlling various quad related systems" width="2" length="4" id_counter="23" id_counter_node="8" sym0="65535" sym1="65535" sym2="65535" sym3="65535" sym4="12300" sym5="18450" sym6="18834" sym7="13260" sym8="2016" sym9="32382" sym10="4096" sym11="2048">
+	<nodes>
+		<n id="1" component_id="2">
+			<node label="Battery 1" mode="1" type="1" description="The input signal to be processed."/>
+		</n>
+		<n id="2" component_id="4">
+			<node label="Gas pedal" mode="1" type="1" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="3" component_id="7">
+			<node label="Throttle" type="1" description="The input signal to be processed.">
+				<position x="1" z="2"/>
+			</node>
+		</n>
+		<n id="4" component_id="10">
+			<node label="Battery light color" type="5" description="The input signal to be processed.">
+				<position z="3"/>
+			</node>
+		</n>
+		<n id="5" component_id="15">
+			<node label="Speed" mode="1" type="1" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="6" component_id="18">
+			<node label="Breaking power" type="1" description="The input signal to be processed.">
+				<position x="1" z="3"/>
+			</node>
+		</n>
+		<n id="7" component_id="20">
+			<node label="Breaking" mode="1" description="The input signal to be processed.">
+				<position z="2"/>
+			</node>
+		</n>
+		<n id="8" component_id="23">
+			<node label="Battery 2" mode="1" type="1" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="40">
+				<object id="11" count="4">
+					<pos x="-1"/>
+					<in1 component_id="2" v="0.754221"/>
+					<in2 component_id="4"/>
+					<in3 component_id="15" v="0.008787"/>
+					<in4 component_id="23" v="0.754221"/>
+					<out1>
+						<v 01="0.754221" 03="0.008787" 04="0.754221"/>
+					</out1>
+				</object>
+			</c>
+			<c type="56">
+				<object id="12" script="lastGas = 0
+cap = 0.3
+
+function clamp(value, min, max)
+	if value &gt; max then return max end
+	if value &lt; min then return min end
+	return value
+end
+
+function onTick()
+	battery = input.getNumber(1)
+	battery = (battery + input.getNumber(4)) / 2
+	gas = input.getNumber(2)
+	speed = input.getNumber(3)
+	breaking = input.getBool(1)
+	
+	--Drop gas quicker
+	if lastGas &gt; cap and gas &lt;= cap then
+		gas = 0
+	end
+	
+	--Calculate light values according to battery
+	if battery &gt; 0.5 then
+		green = 1
+		red = 1 - (math.abs(battery - 0.5) * 2)
+	elseif battery &lt;= 0.5 then
+		green = 1 - (math.abs(battery - 0.5) * 2)
+		red = 1
+	end
+	
+	output.setNumber(1, red)
+	output.setNumber(2, green)
+	output.setNumber(3, 0)
+
+	--Calculate breaking power
+	if breaking then
+		breakingPower = 1 - clamp((speed / 60), 0, 1) + 0.2
+	else	
+		breakingPower = 0
+	end
+	
+	output.setNumber(5, breakingPower)
+	
+	--Less throtle if there is a lot of charge left
+	throtle = (1 - battery) + 0.15
+	throtle = throtle * gas
+	
+	output.setNumber(4, throtle)
+
+
+	lastGas = gas	
+end">
+					<pos x="2.5" y="-0.25"/>
+					<in1 component_id="21">
+						<v 01="0.754221" 03="0.006176" 04="0.754221"/>
+					</in1>
+					<out1>
+						<v 01="0.491559" 02="1"/>
+					</out1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="13" i="3">
+					<pos x="4" y="-0.25"/>
+					<in1 component_id="12">
+						<v 01="0.491559" 02="1"/>
+					</in1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="19" i="4">
+					<pos x="4" y="-0.75"/>
+					<in1 component_id="12">
+						<v 01="0.491559" 02="1"/>
+					</in1>
+				</object>
+			</c>
+			<c type="41">
+				<object id="21" count="1">
+					<pos x="0.5" y="-0.75"/>
+					<inc component_id="11">
+						<v 01="0.754221" 03="0.009935" 04="0.754221"/>
+					</inc>
+					<in1 component_id="20"/>
+					<out1>
+						<v 01="0.754221" 03="0.009935" 04="0.754221"/>
+					</out1>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="2">
+				<object id="2">
+					<pos x="-2.5" y="0.75"/>
+					<in1 v="0.754221"/>
+					<out1 v="0.754221"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="4">
+					<pos x="-2.5" y="0.25"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="7">
+					<pos x="5.5" y="-0.25"/>
+					<in1 component_id="13"/>
+				</object>
+			</c>
+			<c type="5">
+				<object id="10">
+					<pos x="4" y="0.25"/>
+					<in1 component_id="12">
+						<v 01="0.491559" 02="1"/>
+					</in1>
+					<out1>
+						<v 01="0.491559" 02="1"/>
+					</out1>
+				</object>
+			</c>
+			<c type="2">
+				<object id="15">
+					<pos x="-2.5" y="-0.25"/>
+					<in1 v="0.008787"/>
+					<out1 v="0.008787"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="18">
+					<pos x="5.5" y="-0.75"/>
+					<in1 component_id="19"/>
+				</object>
+			</c>
+			<c>
+				<object id="20">
+					<pos x="-1" y="-0.75"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="23">
+					<pos x="-2.5" y="-0.75"/>
+					<in1 v="0.754221"/>
+					<out1 v="0.754221"/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="11" count="4">
+				<pos x="-1"/>
+				<in1 component_id="2" v="0.754221"/>
+				<in2 component_id="4"/>
+				<in3 component_id="15" v="0.008787"/>
+				<in4 component_id="23" v="0.754221"/>
+				<out1>
+					<v 01="0.754221" 03="0.008787" 04="0.754221"/>
+				</out1>
+			</c0>
+			<c1 id="12" script="lastGas = 0
+cap = 0.3
+
+function clamp(value, min, max)
+	if value &gt; max then return max end
+	if value &lt; min then return min end
+	return value
+end
+
+function onTick()
+	battery = input.getNumber(1)
+	battery = (battery + input.getNumber(4)) / 2
+	gas = input.getNumber(2)
+	speed = input.getNumber(3)
+	breaking = input.getBool(1)
+	
+	--Drop gas quicker
+	if lastGas &gt; cap and gas &lt;= cap then
+		gas = 0
+	end
+	
+	--Calculate light values according to battery
+	if battery &gt; 0.5 then
+		green = 1
+		red = 1 - (math.abs(battery - 0.5) * 2)
+	elseif battery &lt;= 0.5 then
+		green = 1 - (math.abs(battery - 0.5) * 2)
+		red = 1
+	end
+	
+	output.setNumber(1, red)
+	output.setNumber(2, green)
+	output.setNumber(3, 0)
+
+	--Calculate breaking power
+	if breaking then
+		breakingPower = 1 - clamp((speed / 60), 0, 1) + 0.2
+	else	
+		breakingPower = 0
+	end
+	
+	output.setNumber(5, breakingPower)
+	
+	--Less throtle if there is a lot of charge left
+	throtle = (1 - battery) + 0.15
+	throtle = throtle * gas
+	
+	output.setNumber(4, throtle)
+
+
+	lastGas = gas	
+end">
+				<pos x="2.5" y="-0.25"/>
+				<in1 component_id="21">
+					<v 01="0.754221" 03="0.006176" 04="0.754221"/>
+				</in1>
+				<out1>
+					<v 01="0.491559" 02="1"/>
+				</out1>
+			</c1>
+			<c2 id="13" i="3">
+				<pos x="4" y="-0.25"/>
+				<in1 component_id="12">
+					<v 01="0.491559" 02="1"/>
+				</in1>
+			</c2>
+			<c3 id="19" i="4">
+				<pos x="4" y="-0.75"/>
+				<in1 component_id="12">
+					<v 01="0.491559" 02="1"/>
+				</in1>
+			</c3>
+			<c4 id="21" count="1">
+				<pos x="0.5" y="-0.75"/>
+				<inc component_id="11">
+					<v 01="0.754221" 03="0.009935" 04="0.754221"/>
+				</inc>
+				<in1 component_id="20"/>
+				<out1>
+					<v 01="0.754221" 03="0.009935" 04="0.754221"/>
+				</out1>
+			</c4>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="2">
+				<pos x="-2.5" y="0.75"/>
+				<in1 v="0.754221"/>
+				<out1 v="0.754221"/>
+			</c0>
+			<c1 id="4">
+				<pos x="-2.5" y="0.25"/>
+			</c1>
+			<c2 id="7">
+				<pos x="5.5" y="-0.25"/>
+				<in1 component_id="13"/>
+			</c2>
+			<c3 id="10">
+				<pos x="4" y="0.25"/>
+				<in1 component_id="12">
+					<v 01="0.491559" 02="1"/>
+				</in1>
+				<out1>
+					<v 01="0.491559" 02="1"/>
+				</out1>
+			</c3>
+			<c4 id="15">
+				<pos x="-2.5" y="-0.25"/>
+				<in1 v="0.008787"/>
+				<out1 v="0.008787"/>
+			</c4>
+			<c5 id="18">
+				<pos x="5.5" y="-0.75"/>
+				<in1 component_id="19"/>
+			</c5>
+			<c6 id="20">
+				<pos x="-1" y="-0.75"/>
+			</c6>
+			<c7 id="23">
+				<pos x="-2.5" y="-0.75"/>
+				<in1 v="0.754221"/>
+				<out1 v="0.754221"/>
+			</c7>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

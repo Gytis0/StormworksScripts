@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Camera Testing" description="No description set." width="2" length="3" id_counter="13" id_counter_node="5" sym0="65535" sym1="65535" sym2="65300" sym3="6152" sym4="6172" sym5="6152" sym6="15360" sym7="15360" sym8="6144" sym9="16" sym10="68" sym11="56" sym12="186" sym13="56" sym14="68" sym15="16">
+	<nodes>
+		<n id="1" component_id="2">
+			<node label="Input" mode="1" type="6" description="The input signal to be processed."/>
+		</n>
+		<n id="2" component_id="7">
+			<node label="Output" type="6" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="3" component_id="5">
+			<node label="Higher FOV" mode="1" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+		<n id="4" component_id="6">
+			<node label="Lower FOV" mode="1" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="5" component_id="12">
+			<node label="Camera FOV" type="1" description="The input signal to be processed.">
+				<position z="2"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="8" script="higher = false
+lastHigher = false
+lower = false
+lastLower = false
+
+function onTick()
+	higher = input.getBool(1)
+	lower = input.getBool(2)
+	
+	if higher and higher ~= lastHigher then upFov = true
+	if lower and lower ~= lastLower then downFov = true
+	
+	if upFov then 
+	
+	lastHigher = higher
+	lastLower = lower
+	upFov = false
+	downFov = false
+end
+
+-- Draw function that will be executed when this script renders to a screen
+function onDraw()
+	w = screen.getWidth()				  -- Get the screen's width and height
+	h = screen.getHeight()					
+	screen.setColor(0, 255, 0)			 -- Set draw color to green
+	screen.drawCircleF(w / 2, h / 2, 30)   -- Draw a 30px radius circle in the center of the screen
+end">
+					<pos x="3.5" y="-0.75"/>
+					<in1 component_id="9">
+						<v/>
+					</in1>
+					<in2 component_id="2">
+						<v/>
+					</in2>
+					<out1>
+						<v/>
+					</out1>
+					<out2>
+						<v/>
+					</out2>
+				</object>
+			</c>
+			<c type="41">
+				<object id="9" count="2">
+					<pos x="2.5" y="0.25"/>
+					<inc>
+						<v/>
+					</inc>
+					<in1 component_id="5"/>
+					<in2 component_id="6"/>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="13">
+					<pos x="5.25"/>
+					<in1 component_id="8">
+						<v/>
+					</in1>
+					<out1/>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="6">
+				<object id="2">
+					<pos x="1.25" y="-1"/>
+					<in1>
+						<v/>
+					</in1>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+			<c>
+				<object id="5">
+					<pos x="1.25"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+			<c>
+				<object id="6">
+					<pos x="1.25" y="-0.5"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+			<c type="7">
+				<object id="7">
+					<pos x="5" y="-1"/>
+					<in1 component_id="8" node_index="1">
+						<v/>
+					</in1>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+			<c type="3">
+				<object id="12">
+					<pos x="6.75"/>
+					<in1 component_id="13"/>
+					<out1/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="8" script="higher = false
+lastHigher = false
+lower = false
+lastLower = false
+
+function onTick()
+	higher = input.getBool(1)
+	lower = input.getBool(2)
+	
+	if higher and higher ~= lastHigher then upFov = true
+	if lower and lower ~= lastLower then downFov = true
+	
+	if upFov then 
+	
+	lastHigher = higher
+	lastLower = lower
+	upFov = false
+	downFov = false
+end
+
+-- Draw function that will be executed when this script renders to a screen
+function onDraw()
+	w = screen.getWidth()				  -- Get the screen's width and height
+	h = screen.getHeight()					
+	screen.setColor(0, 255, 0)			 -- Set draw color to green
+	screen.drawCircleF(w / 2, h / 2, 30)   -- Draw a 30px radius circle in the center of the screen
+end">
+				<pos x="3.5" y="-0.75"/>
+				<in1 component_id="9">
+					<v/>
+				</in1>
+				<in2 component_id="2">
+					<v/>
+				</in2>
+				<out1>
+					<v/>
+				</out1>
+				<out2>
+					<v/>
+				</out2>
+			</c0>
+			<c1 id="9" count="2">
+				<pos x="2.5" y="0.25"/>
+				<inc>
+					<v/>
+				</inc>
+				<in1 component_id="5"/>
+				<in2 component_id="6"/>
+				<out1>
+					<v/>
+				</out1>
+			</c1>
+			<c2 id="13">
+				<pos x="5.25"/>
+				<in1 component_id="8">
+					<v/>
+				</in1>
+				<out1/>
+			</c2>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="2">
+				<pos x="1.25" y="-1"/>
+				<in1>
+					<v/>
+				</in1>
+				<out1>
+					<v/>
+				</out1>
+			</c0>
+			<c1 id="5">
+				<pos x="1.25"/>
+				<in1/>
+				<out1/>
+			</c1>
+			<c2 id="6">
+				<pos x="1.25" y="-0.5"/>
+				<in1/>
+				<out1/>
+			</c2>
+			<c3 id="7">
+				<pos x="5" y="-1"/>
+				<in1 component_id="8" node_index="1">
+					<v/>
+				</in1>
+				<out1>
+					<v/>
+				</out1>
+			</c3>
+			<c4 id="12">
+				<pos x="6.75"/>
+				<in1 component_id="13"/>
+				<out1/>
+			</c4>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

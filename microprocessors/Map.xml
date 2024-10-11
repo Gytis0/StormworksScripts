@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Map" width="3" length="2" id_counter="80" id_counter_node="13" sym0="32752" sym1="32808" sym2="32836" sym3="65508" sym4="24580" sym5="8232" sym6="8200" sym7="8840" sym8="18440" sym9="16400" sym10="20496" sym11="17758" sym12="16529" sym13="16721" sym14="8202" sym15="8188">
+	<nodes>
+		<n id="1" component_id="3">
+			<node label="Monitor" type="6" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+		<n id="2" component_id="8">
+			<node label="GPS X" mode="1" type="1" description="The input signal to be processed."/>
+		</n>
+		<n id="3" component_id="9">
+			<node label="GPS Y" mode="1" type="1" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="5" component_id="13">
+			<node label="Compass Bearing" mode="1" type="1" description="The input signal to be processed.">
+				<position x="2"/>
+			</node>
+		</n>
+		<n id="6" component_id="16">
+			<node label="Touch input" mode="1" type="5" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="7" component_id="38">
+			<node label="Touch Pulse" description="The input signal to be processed.">
+				<position x="2" z="1"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="4" script="function onTick()
+	w = input.getNumber(1)
+	h = input.getNumber(2)
+	
+	zoom = input.getNumber(7)
+	x = input.getNumber(8)
+	y = input.getNumber(9)
+	bearing = input.getNumber(10)
+end
+
+function onDraw()
+			
+	w = screen.getWidth()
+	h = screen.getHeight()	
+	
+	if (w&lt;h) then
+		size = w * 0.04
+	else
+		size = h * 0.04
+	end
+	
+	screen.drawMap(x, y, zoom)
+	
+	screen.setColor(200, 0, 0, 128)
+	drawCurrentPosition(w, h)
+	
+	screen.setColor(220, 0, 0, 255)
+	screen.drawRectF(findRectCenterX(w, 2), findRectCenterY(h, 2), 2, 2)
+end
+	
+function drawCurrentPosition(w, h)
+	if (w&lt;h) then
+		radius = w * 0.09
+	else
+		radius = h * 0.09
+	end
+	cx = w/2
+	cy = h/2
+	compassDegrees = bearing * -360 % 360
+	translatedBearing = compassDegrees + 90
+	rad1 = math.rad(translatedBearing)
+	rad2 = math.rad(translatedBearing + 140)
+	rad3 = math.rad(translatedBearing + 220)
+	x1 = cx - radius * math.cos(rad1)
+	y1 = cy - radius * math.sin(rad1)
+	x2 = cx - radius * math.cos(rad2)
+	y2 = cy - radius * math.sin(rad2)
+	x3 = cx - radius * math.cos(rad3)
+	y3 = cy - radius * math.sin(rad3)
+	screen.drawTriangleF(x1, y1, x2, y2, x3, y3)
+end
+	
+function findRectCenterX(w, rectW)
+	return w/2 - (rectW / 2)
+end
+	
+function findRectCenterY(h, rectH)
+	return h/2 - (rectH / 2)
+end
+	
+function cramp(min, max, value)
+	if (value &lt; min) then return min
+	elseif (value &gt; max) then return max
+	else return value end
+end">
+					<pos x="-1"/>
+					<in1 component_id="11">
+						<v 01="160" 02="96" 03="15" 04="95" 07="1" 08="-1206.113037" 09="-15285.206055" 10="0.246914" 11="-1193.72998" 12="-15247.69043"/>
+					</in1>
+					<in2>
+						<v/>
+					</in2>
+					<out1>
+						<v 01="1"/>
+					</out1>
+					<out2>
+						<v/>
+					</out2>
+				</object>
+			</c>
+			<c type="40">
+				<object id="11" count="4" offset="6">
+					<pos x="-2" y="1"/>
+					<inc component_id="16">
+						<v 01="160" 02="96" 03="15" 04="95"/>
+					</inc>
+					<in1 component_id="49" v="1"/>
+					<in2 component_id="8" v="-1206.119873"/>
+					<in3 component_id="9" v="-15285.206055"/>
+					<in4 component_id="13" v="0.246898"/>
+					<out1>
+						<v 01="160" 02="96" 03="15" 04="95" 07="1" 08="-1206.119873" 09="-15285.206055" 10="0.246898" 11="-1193.72998" 12="-15247.69043"/>
+					</out1>
+				</object>
+			</c>
+			<c type="29">
+				<object id="17">
+					<pos x="2" y="2.25"/>
+					<in1 component_id="29">
+						<v 01="1"/>
+					</in1>
+					<out1/>
+				</object>
+			</c>
+			<c type="56">
+				<object id="29" script='white = {255, 255, 255, 128}
+black = {0, 0, 0, 128}
+red = {200, 0, 0, 128}
+
+zoom = 1
+--anchor example(x, y). Range[0;1]
+firstRow = {0, 0}
+lastRow = {0, 1}
+
+--1. Add button(width, height, color, text, textColor, anchor, offsetX, offsetY)
+zoomInButton = {7, 7, black, "+", white, lastRow, 0, 0}
+zoomOutButton = {7, 7, black, "-", white, lastRow, 7, 0}
+
+
+
+function onTick()
+	w = input.getNumber(1)
+	h = input.getNumber(2)
+	inputX = input.getNumber(3)
+	inputY = input.getNumber(4)
+	bearing = input.getNumber(5)
+	
+	compassDegrees = bearing * -360 % 360
+	bearingButton = {17, 7, black, string.format("%.0f", compassDegrees), red, firstRow, 0, 0}
+	
+	isPressed = input.getBool(1)
+	
+	--2. Check if it&apos;s pressed
+	currentButton = zoomInButton
+	zoomingIn = isPressed and isPointInRectangle(inputX, inputY, w, h, currentButton)
+	
+	currentButton = zoomOutButton
+	zoomingOut = isPressed and isPointInRectangle(inputX, inputY, w, h, currentButton)
+
+	--3. Perform an action if it&apos;s pressed
+	if (zoomingOut and zoom &lt; 50) then 
+		zoom = zoom + zoom * 0.05
+		output.setBool(1, true)
+	elseif (zoomingIn and zoom &gt; 0.1) then
+		zoom = zoom - zoom * 0.05 
+		output.setBool(1, true)
+	else
+		output.setBool(1, false)
+	end
+	
+	output.setNumber(1, zoom)
+end
+
+function onDraw()
+	w = screen.getWidth()
+	h = screen.getHeight()					
+	
+	--4. Draw the button
+	drawButton(zoomInButton)
+	drawButton(zoomOutButton)
+	drawButton(bearingButton)
+end
+
+
+function unpack(pack)
+	return table.unpack(pack)
+end
+
+function isPointInRectangle(x, y, w, h, button)
+	rectX = button[6][1] * (w - button[1]) + button[7]
+	rectY = button[6][2] * (h - button[2]) + button[8]
+	rectW = button[1]
+	rectH = button[2]
+	return x &gt; rectX and y &gt; rectY and x &lt; rectX+rectW and y &lt; rectY+rectH
+end
+
+function drawButton(button)
+	x = button[6][1] * (w - button[1]) + button[7]
+	y = button[6][2] * (h - button[2]) + button[8]
+	width = button[1]
+	height = button[2]
+	
+	screen.setColor(unpack(button[3]))
+	screen.drawRectF(x, y, width, height)
+	
+	frameColor = {button[3][1] * 0.8, button[3][2] * 0.8, button[3][3] * 0.8, 255}
+	screen.setColor(unpack(frameColor))
+	screen.drawRect(x, y, width, height)
+	
+	screen.setColor(unpack(button[5]))
+	screen.drawTextBox(x, y, width, height, button[4], 1, 1)
+end'>
+					<pos x="1"/>
+					<in1 component_id="61">
+						<v 01="160" 02="96" 03="15" 04="95" 05="0.246914"/>
+					</in1>
+					<in2 component_id="4" node_index="1">
+						<v/>
+					</in2>
+					<out1>
+						<v 01="1"/>
+					</out1>
+					<out2>
+						<v/>
+					</out2>
+				</object>
+			</c>
+			<c type="31">
+				<object id="49">
+					<pos x="2" y="1.75"/>
+					<in1 component_id="29">
+						<v 01="1"/>
+					</in1>
+					<out1 v="1"/>
+				</object>
+			</c>
+			<c type="40">
+				<object id="61" count="1" offset="4">
+					<pos y="2.5"/>
+					<inc component_id="16">
+						<v 01="160" 02="96" 03="15" 04="95"/>
+					</inc>
+					<in1 component_id="13" v="0.246898"/>
+					<out1>
+						<v 01="160" 02="96" 03="15" 04="95" 05="0.246898"/>
+					</out1>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="7">
+				<object id="3">
+					<pos x="2.5"/>
+					<in1 component_id="29" node_index="1">
+						<v/>
+					</in1>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+			<c type="2">
+				<object id="8">
+					<pos x="-4.75" y="1.75"/>
+					<in1 v="-1206.119873"/>
+					<out1 v="-1206.119873"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="9">
+					<pos x="-4.75" y="1.25"/>
+					<in1 v="-15285.206055"/>
+					<out1 v="-15285.206055"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="13">
+					<pos x="-4.75" y="0.75"/>
+					<in1 v="0.246898"/>
+					<out1 v="0.246898"/>
+				</object>
+			</c>
+			<c type="4">
+				<object id="16">
+					<pos x="-3" y="3.5"/>
+					<in1>
+						<v 01="160" 02="96" 03="15" 04="95"/>
+					</in1>
+					<out1>
+						<v 01="160" 02="96" 03="15" 04="95"/>
+					</out1>
+				</object>
+			</c>
+			<c type="1">
+				<object id="38">
+					<pos x="3.5" y="2.25"/>
+					<in1 component_id="17"/>
+					<out1/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="4" script="function onTick()
+	w = input.getNumber(1)
+	h = input.getNumber(2)
+	
+	zoom = input.getNumber(7)
+	x = input.getNumber(8)
+	y = input.getNumber(9)
+	bearing = input.getNumber(10)
+end
+
+function onDraw()
+			
+	w = screen.getWidth()
+	h = screen.getHeight()	
+	
+	if (w&lt;h) then
+		size = w * 0.04
+	else
+		size = h * 0.04
+	end
+	
+	screen.drawMap(x, y, zoom)
+	
+	screen.setColor(200, 0, 0, 128)
+	drawCurrentPosition(w, h)
+	
+	screen.setColor(220, 0, 0, 255)
+	screen.drawRectF(findRectCenterX(w, 2), findRectCenterY(h, 2), 2, 2)
+end
+	
+function drawCurrentPosition(w, h)
+	if (w&lt;h) then
+		radius = w * 0.09
+	else
+		radius = h * 0.09
+	end
+	cx = w/2
+	cy = h/2
+	compassDegrees = bearing * -360 % 360
+	translatedBearing = compassDegrees + 90
+	rad1 = math.rad(translatedBearing)
+	rad2 = math.rad(translatedBearing + 140)
+	rad3 = math.rad(translatedBearing + 220)
+	x1 = cx - radius * math.cos(rad1)
+	y1 = cy - radius * math.sin(rad1)
+	x2 = cx - radius * math.cos(rad2)
+	y2 = cy - radius * math.sin(rad2)
+	x3 = cx - radius * math.cos(rad3)
+	y3 = cy - radius * math.sin(rad3)
+	screen.drawTriangleF(x1, y1, x2, y2, x3, y3)
+end
+	
+function findRectCenterX(w, rectW)
+	return w/2 - (rectW / 2)
+end
+	
+function findRectCenterY(h, rectH)
+	return h/2 - (rectH / 2)
+end
+	
+function cramp(min, max, value)
+	if (value &lt; min) then return min
+	elseif (value &gt; max) then return max
+	else return value end
+end">
+				<pos x="-1"/>
+				<in1 component_id="11">
+					<v 01="160" 02="96" 03="15" 04="95" 07="1" 08="-1206.113037" 09="-15285.206055" 10="0.246914" 11="-1193.72998" 12="-15247.69043"/>
+				</in1>
+				<in2>
+					<v/>
+				</in2>
+				<out1>
+					<v 01="1"/>
+				</out1>
+				<out2>
+					<v/>
+				</out2>
+			</c0>
+			<c1 id="11" count="4" offset="6">
+				<pos x="-2" y="1"/>
+				<inc component_id="16">
+					<v 01="160" 02="96" 03="15" 04="95"/>
+				</inc>
+				<in1 component_id="49" v="1"/>
+				<in2 component_id="8" v="-1206.119873"/>
+				<in3 component_id="9" v="-15285.206055"/>
+				<in4 component_id="13" v="0.246898"/>
+				<out1>
+					<v 01="160" 02="96" 03="15" 04="95" 07="1" 08="-1206.119873" 09="-15285.206055" 10="0.246898" 11="-1193.72998" 12="-15247.69043"/>
+				</out1>
+			</c1>
+			<c2 id="17">
+				<pos x="2" y="2.25"/>
+				<in1 component_id="29">
+					<v 01="1"/>
+				</in1>
+				<out1/>
+			</c2>
+			<c3 id="29" script='white = {255, 255, 255, 128}
+black = {0, 0, 0, 128}
+red = {200, 0, 0, 128}
+
+zoom = 1
+--anchor example(x, y). Range[0;1]
+firstRow = {0, 0}
+lastRow = {0, 1}
+
+--1. Add button(width, height, color, text, textColor, anchor, offsetX, offsetY)
+zoomInButton = {7, 7, black, "+", white, lastRow, 0, 0}
+zoomOutButton = {7, 7, black, "-", white, lastRow, 7, 0}
+
+
+
+function onTick()
+	w = input.getNumber(1)
+	h = input.getNumber(2)
+	inputX = input.getNumber(3)
+	inputY = input.getNumber(4)
+	bearing = input.getNumber(5)
+	
+	compassDegrees = bearing * -360 % 360
+	bearingButton = {17, 7, black, string.format("%.0f", compassDegrees), red, firstRow, 0, 0}
+	
+	isPressed = input.getBool(1)
+	
+	--2. Check if it&apos;s pressed
+	currentButton = zoomInButton
+	zoomingIn = isPressed and isPointInRectangle(inputX, inputY, w, h, currentButton)
+	
+	currentButton = zoomOutButton
+	zoomingOut = isPressed and isPointInRectangle(inputX, inputY, w, h, currentButton)
+
+	--3. Perform an action if it&apos;s pressed
+	if (zoomingOut and zoom &lt; 50) then 
+		zoom = zoom + zoom * 0.05
+		output.setBool(1, true)
+	elseif (zoomingIn and zoom &gt; 0.1) then
+		zoom = zoom - zoom * 0.05 
+		output.setBool(1, true)
+	else
+		output.setBool(1, false)
+	end
+	
+	output.setNumber(1, zoom)
+end
+
+function onDraw()
+	w = screen.getWidth()
+	h = screen.getHeight()					
+	
+	--4. Draw the button
+	drawButton(zoomInButton)
+	drawButton(zoomOutButton)
+	drawButton(bearingButton)
+end
+
+
+function unpack(pack)
+	return table.unpack(pack)
+end
+
+function isPointInRectangle(x, y, w, h, button)
+	rectX = button[6][1] * (w - button[1]) + button[7]
+	rectY = button[6][2] * (h - button[2]) + button[8]
+	rectW = button[1]
+	rectH = button[2]
+	return x &gt; rectX and y &gt; rectY and x &lt; rectX+rectW and y &lt; rectY+rectH
+end
+
+function drawButton(button)
+	x = button[6][1] * (w - button[1]) + button[7]
+	y = button[6][2] * (h - button[2]) + button[8]
+	width = button[1]
+	height = button[2]
+	
+	screen.setColor(unpack(button[3]))
+	screen.drawRectF(x, y, width, height)
+	
+	frameColor = {button[3][1] * 0.8, button[3][2] * 0.8, button[3][3] * 0.8, 255}
+	screen.setColor(unpack(frameColor))
+	screen.drawRect(x, y, width, height)
+	
+	screen.setColor(unpack(button[5]))
+	screen.drawTextBox(x, y, width, height, button[4], 1, 1)
+end'>
+				<pos x="1"/>
+				<in1 component_id="61">
+					<v 01="160" 02="96" 03="15" 04="95" 05="0.246914"/>
+				</in1>
+				<in2 component_id="4" node_index="1">
+					<v/>
+				</in2>
+				<out1>
+					<v 01="1"/>
+				</out1>
+				<out2>
+					<v/>
+				</out2>
+			</c3>
+			<c4 id="49">
+				<pos x="2" y="1.75"/>
+				<in1 component_id="29">
+					<v 01="1"/>
+				</in1>
+				<out1 v="1"/>
+			</c4>
+			<c5 id="61" count="1" offset="4">
+				<pos y="2.5"/>
+				<inc component_id="16">
+					<v 01="160" 02="96" 03="15" 04="95"/>
+				</inc>
+				<in1 component_id="13" v="0.246898"/>
+				<out1>
+					<v 01="160" 02="96" 03="15" 04="95" 05="0.246898"/>
+				</out1>
+			</c5>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="3">
+				<pos x="2.5"/>
+				<in1 component_id="29" node_index="1">
+					<v/>
+				</in1>
+				<out1>
+					<v/>
+				</out1>
+			</c0>
+			<c1 id="8">
+				<pos x="-4.75" y="1.75"/>
+				<in1 v="-1206.119873"/>
+				<out1 v="-1206.119873"/>
+			</c1>
+			<c2 id="9">
+				<pos x="-4.75" y="1.25"/>
+				<in1 v="-15285.206055"/>
+				<out1 v="-15285.206055"/>
+			</c2>
+			<c3 id="13">
+				<pos x="-4.75" y="0.75"/>
+				<in1 v="0.246898"/>
+				<out1 v="0.246898"/>
+			</c3>
+			<c4 id="16">
+				<pos x="-3" y="3.5"/>
+				<in1>
+					<v 01="160" 02="96" 03="15" 04="95"/>
+				</in1>
+				<out1>
+					<v 01="160" 02="96" 03="15" 04="95"/>
+				</out1>
+			</c4>
+			<c5 id="38">
+				<pos x="3.5" y="2.25"/>
+				<in1 component_id="17"/>
+				<out1/>
+			</c5>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

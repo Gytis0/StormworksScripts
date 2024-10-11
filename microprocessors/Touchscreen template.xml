@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Touchscreen Template" description="No description set." width="3" length="1" id_counter="28" id_counter_node="3" sym0="14272" sym1="10304" sym2="8224" sym3="21776" sym4="21768" sym5="38152" sym6="38148" sym7="32802" sym8="32818" sym9="43308" sym10="26912" sym11="7968" sym12="288" sym13="288" sym14="288" sym15="192">
+	<nodes>
+		<n id="1" component_id="5">
+			<node label="Touch" mode="1" type="5" description="The input signal to be processed."/>
+		</n>
+		<n id="2" component_id="8">
+			<node label="Output" type="6" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="3" component_id="10">
+			<node label="Action" description="The input signal to be processed.">
+				<position x="2"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="27" script='white = {255, 255, 255, 128}
+black = {0, 0, 0, 128}
+
+--anchor example(x, y). Range[0;1]
+lastRow = {0, 1}
+
+--1. Add button(width, height, color, text, textColor, anchor, offsetX, offsetY)
+aButton = {7, 7, black, "a", white, lastRow, 0, 0}
+
+function onTick()
+	w = input.getNumber(1)
+	h = input.getNumber(2)
+	inputX = input.getNumber(3)
+	inputY = input.getNumber(4)
+	isPressed = input.getBool(1)
+	
+	--2. Check if it&apos;s pressed
+	currentButton = aButton
+	buttonPressed = isPressed and isPointInRectangle(inputX, inputY, w, h, currentButton)
+
+	--3. Perform an action if it&apos;s pressed
+	if (buttonPressed) then 
+		output.setBool(1, true)
+	else
+		output.setBool(1, false)
+	end
+end
+
+function onDraw()
+	w = screen.getWidth()
+	h = screen.getHeight()					
+	
+	--4. Draw the button
+	drawButton(aButton)
+end
+
+function isPointInRectangle(x, y, w, h, button)
+	rectX = button[6][1] * (w - button[1]) + button[7]
+	rectY = button[6][2] * (h - button[2]) + button[8]
+	rectW = button[1]
+	rectH = button[2]
+	return x &gt; rectX and y &gt; rectY and x &lt; rectX+rectW and y &lt; rectY+rectH
+end
+
+function drawButton(button)
+	x = button[6][1] * (w - button[1]) + button[7]
+	y = button[6][2] * (h - button[2]) + button[8]
+	width = button[1]
+	height = button[2]
+	
+	screen.setColor(table.unpack(button[3]))
+	screen.drawRectF(x, y, width, height)
+	
+	frameColor = {button[3][1] * 0.8, button[3][2] * 0.8, button[3][3] * 0.8, 255}
+	screen.setColor(table.unpack(frameColor))
+	screen.drawRect(x, y, width, height)
+	
+	screen.setColor(table.unpack(button[5]))
+	screen.drawTextBox(x, y, width, height, button[4], 1, 1)
+end'>
+					<pos x="-3.5" y="-0.5"/>
+					<in1 component_id="5">
+						<v 01="160" 02="96" 03="6" 04="93"/>
+					</in1>
+					<in2>
+						<v/>
+					</in2>
+					<out1>
+						<v bools="1"/>
+					</out1>
+					<out2>
+						<v/>
+					</out2>
+				</object>
+			</c>
+			<c type="29">
+				<object id="28">
+					<pos x="-2.25" y="0.25"/>
+					<in1 component_id="27">
+						<v bools="1"/>
+					</in1>
+					<out1 v="true"/>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="4">
+				<object id="5">
+					<pos x="-5" y="-0.25"/>
+					<in1>
+						<v 01="160" 02="96" 03="6" 04="93"/>
+					</in1>
+					<out1>
+						<v 01="160" 02="96" 03="6" 04="93"/>
+					</out1>
+				</object>
+			</c>
+			<c type="7">
+				<object id="8">
+					<pos x="-2.25" y="-0.75"/>
+					<in1 component_id="27" node_index="1">
+						<v/>
+					</in1>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+			<c type="1">
+				<object id="10">
+					<pos x="-0.75" y="0.25"/>
+					<in1 component_id="28" v="true"/>
+					<out1 v="true"/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="27" script='white = {255, 255, 255, 128}
+black = {0, 0, 0, 128}
+
+--anchor example(x, y). Range[0;1]
+lastRow = {0, 1}
+
+--1. Add button(width, height, color, text, textColor, anchor, offsetX, offsetY)
+aButton = {7, 7, black, "a", white, lastRow, 0, 0}
+
+function onTick()
+	w = input.getNumber(1)
+	h = input.getNumber(2)
+	inputX = input.getNumber(3)
+	inputY = input.getNumber(4)
+	isPressed = input.getBool(1)
+	
+	--2. Check if it&apos;s pressed
+	currentButton = aButton
+	buttonPressed = isPressed and isPointInRectangle(inputX, inputY, w, h, currentButton)
+
+	--3. Perform an action if it&apos;s pressed
+	if (buttonPressed) then 
+		output.setBool(1, true)
+	else
+		output.setBool(1, false)
+	end
+end
+
+function onDraw()
+	w = screen.getWidth()
+	h = screen.getHeight()					
+	
+	--4. Draw the button
+	drawButton(aButton)
+end
+
+function isPointInRectangle(x, y, w, h, button)
+	rectX = button[6][1] * (w - button[1]) + button[7]
+	rectY = button[6][2] * (h - button[2]) + button[8]
+	rectW = button[1]
+	rectH = button[2]
+	return x &gt; rectX and y &gt; rectY and x &lt; rectX+rectW and y &lt; rectY+rectH
+end
+
+function drawButton(button)
+	x = button[6][1] * (w - button[1]) + button[7]
+	y = button[6][2] * (h - button[2]) + button[8]
+	width = button[1]
+	height = button[2]
+	
+	screen.setColor(table.unpack(button[3]))
+	screen.drawRectF(x, y, width, height)
+	
+	frameColor = {button[3][1] * 0.8, button[3][2] * 0.8, button[3][3] * 0.8, 255}
+	screen.setColor(table.unpack(frameColor))
+	screen.drawRect(x, y, width, height)
+	
+	screen.setColor(table.unpack(button[5]))
+	screen.drawTextBox(x, y, width, height, button[4], 1, 1)
+end'>
+				<pos x="-3.5" y="-0.5"/>
+				<in1 component_id="5">
+					<v 01="160" 02="96" 03="6" 04="93"/>
+				</in1>
+				<in2>
+					<v/>
+				</in2>
+				<out1>
+					<v bools="1"/>
+				</out1>
+				<out2>
+					<v/>
+				</out2>
+			</c0>
+			<c1 id="28">
+				<pos x="-2.25" y="0.25"/>
+				<in1 component_id="27">
+					<v bools="1"/>
+				</in1>
+				<out1 v="true"/>
+			</c1>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="5">
+				<pos x="-5" y="-0.25"/>
+				<in1>
+					<v 01="160" 02="96" 03="6" 04="93"/>
+				</in1>
+				<out1>
+					<v 01="160" 02="96" 03="6" 04="93"/>
+				</out1>
+			</c0>
+			<c1 id="8">
+				<pos x="-2.25" y="-0.75"/>
+				<in1 component_id="27" node_index="1">
+					<v/>
+				</in1>
+				<out1>
+					<v/>
+				</out1>
+			</c1>
+			<c2 id="10">
+				<pos x="-0.75" y="0.25"/>
+				<in1 component_id="28" v="true"/>
+				<out1 v="true"/>
+			</c2>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

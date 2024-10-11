@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><vehicle data_version="3" bodies_id="92"><authors/><bodies><body unique_id="88"><components><c d="wheel_advanced_3" t="2"><o bc="FF002B" bc2="454545" bc3="454545" ac="454545" sc="1,454545" tire_type="0" wheel_size="0.5"><vp x="2"/><logic_slots><slot/><slot/><slot/></logic_slots></o></c><c d="08_wedge_4"><o r="-1,0,0,0,1,0,0,0,-1" bc="454545" ac="454545" sc="17"><vp x="1" y="1" z="-3"/></o></c><c d="08_wedge_4"><o r="-1,0,0,0,1,0,0,0,-1" bc="454545" ac="454545" sc="17"><vp y="1" z="-3"/></o></c><c d="wheel_advanced_3"><o bc="FF002B" bc2="E232" bc3="E232" ac="E232" sc="1,E232" tire_type="0" wheel_size="0.5"><vp x="-1"/><logic_slots><slot/><slot/><slot/></logic_slots></o></c><c d="trans_straight"><o r="0,0,-1,1,0,0,0,-1,0" bc="FDA502" bc2="454545" bc3="454545" ac="454545" sc="2,454545,454545"><vp x="1" z="-3"/></o></c><c d="trans_straight"><o r="0,0,-1,1,0,0,0,-1,0" bc="FDA502" bc2="454545" bc3="454545" ac="454545" sc="2,454545,454545"><vp x="1" z="-2"/></o></c><c d="trans_straight"><o r="0,0,-1,1,0,0,0,-1,0" bc="FDA502" bc2="454545" bc3="454545" ac="454545" sc="2,454545,454545"><vp x="1" z="-1"/></o></c><c d="trans_straight"><o r="0,0,-1,1,0,0,0,-1,0" bc="FDA502" bc2="454545" bc3="454545" ac="454545" sc="2,454545,454545"><vp z="-3"/></o></c><c d="trans_straight"><o r="0,0,-1,1,0,0,0,-1,0" bc="FDA502" bc2="454545" bc3="454545" ac="454545" sc="2,454545,454545"><vp z="-2"/></o></c><c d="trans_straight"><o r="0,0,-1,1,0,0,0,-1,0" bc="FDA502" bc2="454545" bc3="454545" ac="454545" sc="2,454545,454545"><vp z="-1"/></o></c><c d="trans_straight"><o bc="FDA502" bc2="454545" bc3="454545" ac="454545" sc="2,454545,454545"><vp x="1" z="-4"/></o></c><c d="trans_straight"><o bc="FDA502" bc2="454545" bc3="454545" ac="454545" sc="2,454545,454545"><vp z="-4"/></o></c><c d="wheel_advanced_3"><o bc="FF002B" bc2="454545" bc3="454545" ac="454545" sc="1,454545" tire_type="0" wheel_size="1.5"><vp x="-1" z="-7"/><logic_slots><slot/><slot/><slot/></logic_slots></o></c><c d="wheel_advanced_3" t="2"><o bc="FF002B" bc2="454545" bc3="454545" ac="454545" sc="1,454545" tire_type="0" wheel_size="1.5"><vp x="2" z="-7"/><logic_slots><slot/><slot/><slot/></logic_slots></o></c><c d="trans_straight"><o r="0,0,1,0,1,0,-1,0,0" bc="FDA502" bc2="454545" bc3="454545" ac="454545" sc="2,454545,454545"><vp x="1" z="-6"/></o></c><c d="01_block_weight"><o r="1,0,0,0,0,1,0,-1,0" bc="141414" ac="141414" sc="6"><vp x="1" z="1"/></o></c><c d="01_block_weight"><o r="1,0,0,0,0,1,0,-1,0" bc="141414" ac="141414" sc="6"><vp z="1"/></o></c><c d="battery_medium"><o r="0,0,1,0,1,0,-1,0,0" bc="FF002B" ac="FF002B" sc="6,141414,141414,141414,141414,141414,141414"><vp x="1" y="1" z="-5"/><logic_slots><slot/><slot/><slot/></logic_slots></o></c><c d="motor_small"><o r="1,0,0,0,1,0,0,0,1" bc="FDA502" ac="FDA502" sc="6"><vp y="1" z="-7"/><logic_slots><slot editor_connected="1"/><slot/><slot/></logic_slots></o></c><c d="motor_small"><o r="1,0,0,0,1,0,0,0,1" bc="FDA502" ac="FDA502" sc="6"><vp x="1" y="1" z="-7"/><logic_slots><slot editor_connected="1"/><slot/><slot/></logic_slots></o></c><c d="rx_large_v2"><o r="-1,0,0,0,1,0,0,0,-1" bc="FF002B" ac="FF002B" sc="5,FF002B,FF002B,FF002B,FF002B,141414"><vp x="2" y="1" z="-7"/><logic_slots><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/></logic_slots></o></c><c d="seat_padded"><o r="1,0,0,0,1,0,0,0,1" bc="FF002B" ac="FF002B" sc="2"><vp y="1" z="1"/><logic_slots><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/></logic_slots><trim_x_display text="0"/><trim_y_display text="0"/><trim_z_display text="0"/><trim_w_display text="0"/></o></c><c d="small_light"><o r="-1,0,0,0,1,0,0,0,-1" bc="FF002B" bc2="E232" bc3="E232" ac="E232" sc="5,FF002B,FF002B,E232,FF002B,141414"><vp x="2" y="1" z="-6"/><logic_slots><slot editor_connected="1"/></logic_slots></o></c><c d="microprocessor"><o r="0,0,-1,-1,0,0,0,1,0" bc="141414" ac="141414" sc="28"><microprocessor_definition name="RC Car Controller" description="A microcontroller used to control RC Car" width="4" length="2" id_counter="68" id_counter_node="14" sym1="8204" sym2="22482" sym3="12242" sym4="2028" sym5="1008" sym6="254" sym7="62" sym9="8" sym10="8" sym11="4" sym12="4" sym13="2"><nodes><n id="1" component_id="2"><node label="Remote input" mode="1" type="5" description="The input signal to be processed."/></n><n id="2" component_id="5"><node label="Right Wheel" type="1" description="The input signal to be processed."><position x="2" z="1"/></node></n><n id="3" component_id="8"><node label="W / S" type="1" description="The input signal to be processed."><position x="3" z="1"/></node></n><n id="4" component_id="10"><node label="Brake" description="The input signal to be processed."><position x="2"/></node></n><n id="9" component_id="46"><node label="Signal Strength" mode="1" type="1" description="The input signal to be processed."><position z="1"/></node></n><n id="10" component_id="49"><node label="Is connected" description="The input signal to be processed."><position x="1"/></node></n><n id="11" component_id="53"><node label="Left Wheel" type="1" description="The input signal to be processed."><position x="1" z="1"/></node></n><n id="12" component_id="59"><node label="Frequency" type="1" description="The input signal to be processed."><position x="3"/></node></n></nodes><group><data><inputs/><outputs/></data><components><c type="56"><object id="26" script='lastAD = 0
+lastWS = 0
+
+frequency = property.getNumber("Frequency")
+
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
+function onTick()
+	output.setNumber(4, frequency)
+	resultAD = 0
+	resultWS = 0
+	
+	AD = input.getNumber(1)
+	WS = input.getNumber(2)
+	connectionDistance = input.getNumber(3)
+	
+	braking = input.getBool(31)
+	
+	if connectionDistance ~= 0 then
+		output.setBool(1, braking)
+		output.setBool(2, true)
+	
+		deltaAD = AD - lastAD
+		deltaWS = WS - lastWS
+	
+		diffAD = math.abs(round(deltaAD / AD, 2) + 0.01)
+		diffWS = math.abs(round(deltaWS / WS, 2) + 0.01)
+	
+		output.setNumber(5, deltaAD)
+		output.setNumber(6, diffAD)
+	
+		if diffAD &lt; 0.002 then
+			resultAD = 0
+		else
+			if deltaAD &gt; 0 then resultAD = 1 end
+			if deltaAD &lt; 0 then resultAD = -1 end
+		end
+		
+		if diffWS &lt; 0.002 then
+			resultWS = 0
+		else
+			if deltaWS &gt; 0 then resultWS = 1 end
+			if deltaWS &lt; 0 then resultWS = -1 end
+		end
+	
+		output.setNumber(1, resultAD)
+		output.setNumber(2, -resultAD)
+		output.setNumber(3, resultWS)
+	
+		lastAD = AD
+		lastWS = WS
+	else
+		output.setBool(1, true)
+		output.setBool(2, false)
+		output.setNumber(1, 0)
+		output.setNumber(2, 0)
+		output.setNumber(3, 0)
+		lastAD = 0
+		lastWS = 0
+	end
+end'><pos x="-3.5"/><in1 component_id="47"/></object></c><c type="31"><object id="27"><pos x="-2" y="0.75"/><in1 component_id="26"/></object></c><c type="31"><object id="28" i="1"><pos x="-2" y="0.25"/><in1 component_id="26"/></object></c><c type="29"><object id="29"><pos x="-2" y="-1.25"/><in1 component_id="26"/></object></c><c type="40"><object id="47" count="1" offset="2"><pos x="-4.75"/><inc component_id="2"/><in1 component_id="46"/></object></c><c type="29"><object id="50" i="1"><pos x="-2" y="-1.75"/><in1 component_id="26"/></object></c><c type="31"><object id="56" i="2"><pos x="-2" y="-0.25"/><in1 component_id="26"/></object></c><c type="19"><object id="58" name="Frequency"><pos x="-3.5" y="0.75"/><min text="0"/><max text="8" value="8"/><int text="1" value="1"/><v text="1" value="1"/></object></c><c type="31"><object id="60" i="3"><pos x="-2" y="-0.75"/><in1 component_id="26"/></object></c></components><components_bridge><c type="4"><object id="2"><pos x="-6" y="0.25"/></object></c><c type="3"><object id="5"><pos x="-0.5" y="0.75"/><in1 component_id="27"/></object></c><c type="3"><object id="8"><pos x="-0.5" y="-0.25"/><in1 component_id="56"/></object></c><c type="1"><object id="10"><pos x="-0.5" y="-1.25"/><in1 component_id="29"/></object></c><c type="2"><object id="46"><pos x="-6" y="-0.25"/></object></c><c type="1"><object id="49"><pos x="-0.5" y="-1.75"/><in1 component_id="50"/></object></c><c type="3"><object id="53"><pos x="-0.5" y="0.25"/><in1 component_id="28"/></object></c><c type="3"><object id="59"><pos x="-0.5" y="-0.75"/><in1 component_id="60"/></object></c></components_bridge><groups/></group></microprocessor_definition><vp x="-1" y="1" z="-4"/><logic_slots><slot/><slot/><slot/><slot/><slot/><slot/><slot/><slot/></logic_slots></o></c><c d="inventory_equipment_remote_control"><o r="1,0,0,0,0,-1,0,1,0" bc="141414" ac="141414" sc="5"><vp y="2" z="-7"/><logic_slots/></o></c><c d="trans_straight"><o r="0,0,1,0,-1,0,1,0,0" bc="FDA502" bc2="FFFFFF" bc3="FFFFFF" ac="FDA502" sc="2,x,x"><vp z="-5"/></o></c><c d="trans_straight"><o r="0,0,1,0,-1,0,1,0,0" bc="FDA502" bc2="FFFFFF" bc3="FFFFFF" ac="FDA502" sc="2,x,x"><vp x="1" z="-5"/></o></c><c d="trans_t"><o r="0,0,1,1,0,0,0,1,0" bc="FDA502" bc2="FFFFFF" bc3="FFFFFF" sc="3,x,x,x"/></c><c d="trans_t"><o bc="FDA502" bc2="FFFFFF" bc3="FFFFFF" sc="3,x,x,x"><vp x="1"/></o></c><c d="generator_small"><o r="1,0,0,0,0,1,0,-1,0" sc="6"><vp z="-6"/><logic_slots><slot/><slot/><slot/></logic_slots></o></c><c d="trans_t_corner"><o r="0,-1,0,1,0,0,0,0,1" bc="FDA502" ac="FDA502" sc="4"><vp z="-7"/></o></c><c d="trans_t_corner"><o r="0,-1,0,1,0,0,0,0,1" bc="FDA502" ac="FDA502" sc="4"><vp x="1" z="-7"/></o></c></components></body></bodies><logic_node_links><logic_node_link type="1"><voxel_pos_0 x="-1" y="2" z="-5"/><voxel_pos_1 x="-2" y="-1"/></logic_node_link><logic_node_link type="4"><voxel_pos_0 x="2" y="1" z="-6"/><voxel_pos_1 x="2" y="1" z="-7"/></logic_node_link><logic_node_link type="4"><voxel_pos_0 x="2" y="1" z="-7"/><voxel_pos_1 x="1" y="1" z="-7"/></logic_node_link><logic_node_link type="4"><voxel_pos_0 x="1" y="1" z="-7"/><voxel_pos_1 y="1" z="-7"/></logic_node_link><logic_node_link type="1"><voxel_pos_0 x="2" y="3" z="-7"/><voxel_pos_1 x="-1" y="2" z="-4"/></logic_node_link><logic_node_link type="1"><voxel_pos_0 x="-1" y="2" z="-7"/><voxel_pos_1 x="1" y="1" z="-7"/></logic_node_link><logic_node_link type="1"><voxel_pos_0 x="-1" y="2" z="-7"/><voxel_pos_1 y="1" z="-7"/></logic_node_link><logic_node_link type="1"><voxel_pos_0 x="-1" y="2" z="-6"/><voxel_pos_1 x="3" y="-1"/></logic_node_link><logic_node_link type="5"><voxel_pos_0 x="2" y="2" z="-7"/><voxel_pos_1 x="-1" y="1" z="-4"/></logic_node_link><logic_node_link type="1"><voxel_pos_0 x="-1" y="1" z="-7"/><voxel_pos_1 x="2" y="2" z="-7"/></logic_node_link><logic_node_link><voxel_pos_0 x="-1" y="1" z="-6"/><voxel_pos_1 x="-1" z="-7"/></logic_node_link><logic_node_link><voxel_pos_0 x="-1" y="1" z="-6"/><voxel_pos_1 x="2" z="-7"/></logic_node_link><logic_node_link><voxel_pos_0 x="-1" y="1" z="-6"/><voxel_pos_1 x="2"/></logic_node_link><logic_node_link><voxel_pos_0 x="-1" y="1" z="-6"/><voxel_pos_1 x="-1"/></logic_node_link><logic_node_link><voxel_pos_0 x="-1" y="1" z="-5"/><voxel_pos_1 x="2" y="1" z="-6"/></logic_node_link><logic_node_link type="4"><voxel_pos_0 y="2" z="-5"/><voxel_pos_1 x="2" y="1" z="-6"/></logic_node_link><logic_node_link type="4"><voxel_pos_0 z="-6"/><voxel_pos_1 y="2" z="-5"/></logic_node_link></logic_node_links></vehicle>

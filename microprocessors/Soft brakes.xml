@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Soft brakes" description="No description set." width="1" length="3" id_counter="14" id_counter_node="3" sym1="960" sym2="48" sym3="8" sym4="4" sym5="388" sym6="16450" sym7="17442" sym8="17447" sym9="16967" sym10="8590" sym11="8206" sym12="4156" sym13="3320" sym14="1008" sym15="192">
+	<nodes>
+		<n id="1" component_id="2">
+			<node label="Speed" mode="1" type="1" description="The input signal to be processed."/>
+		</n>
+		<n id="2" component_id="3">
+			<node label="Braking" mode="1" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="3" component_id="6">
+			<node label="Brake power" type="1" description="The input signal to be processed.">
+				<position z="2"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="41">
+				<object id="7" count="1">
+					<pos x="-0.25" y="-0.5"/>
+					<in1 component_id="3"/>
+				</object>
+			</c>
+			<c type="40">
+				<object id="9" count="1">
+					<pos x="1" y="-0.5"/>
+					<inc component_id="7"/>
+					<in1 component_id="2"/>
+				</object>
+			</c>
+			<c type="56">
+				<object id="10" script='max = property.getNumber("Max speed")
+hardness = property.getNumber("Hardness")
+
+function clamp(value, min, max)
+	if value &gt; max then return max end
+	if value &lt; min then return min end
+	return value
+end
+
+function onTick()
+	speed = input.getNumber(1)
+	breaking = input.getBool(1)
+	
+	if breaking then
+		breakingPower = 1 - clamp((speed / max), 0, 1) + hardness
+	else	
+		breakingPower = 0
+	end
+	
+	output.setNumber(1, breakingPower)
+end'>
+					<pos x="2.25" y="-0.5"/>
+					<in1 component_id="9"/>
+				</object>
+			</c>
+			<c type="31">
+				<object id="11">
+					<pos x="3.5" y="-0.25"/>
+					<in1 component_id="10"/>
+				</object>
+			</c>
+			<c type="34">
+				<object id="12" n="Max Speed">
+					<pos x="-1.75" y="1"/>
+					<v text="50" value="50"/>
+				</object>
+			</c>
+			<c type="19">
+				<object id="14" name="Hardness">
+					<pos x="-1.75" y="0.5"/>
+					<min text="0"/>
+					<max text="1" value="1"/>
+					<int text="1" value="1"/>
+					<v text="0.2" value="0.2"/>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="2">
+				<object id="2">
+					<pos y="-1.25"/>
+				</object>
+			</c>
+			<c>
+				<object id="3">
+					<pos x="-1.25" y="-1.25"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="6">
+					<pos x="4.75" y="-0.25"/>
+					<in1 component_id="11"/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="7" count="1">
+				<pos x="-0.25" y="-0.5"/>
+				<in1 component_id="3"/>
+			</c0>
+			<c1 id="9" count="1">
+				<pos x="1" y="-0.5"/>
+				<inc component_id="7"/>
+				<in1 component_id="2"/>
+			</c1>
+			<c2 id="10" script='max = property.getNumber("Max speed")
+hardness = property.getNumber("Hardness")
+
+function clamp(value, min, max)
+	if value &gt; max then return max end
+	if value &lt; min then return min end
+	return value
+end
+
+function onTick()
+	speed = input.getNumber(1)
+	breaking = input.getBool(1)
+	
+	if breaking then
+		breakingPower = 1 - clamp((speed / max), 0, 1) + hardness
+	else	
+		breakingPower = 0
+	end
+	
+	output.setNumber(1, breakingPower)
+end'>
+				<pos x="2.25" y="-0.5"/>
+				<in1 component_id="9"/>
+			</c2>
+			<c3 id="11">
+				<pos x="3.5" y="-0.25"/>
+				<in1 component_id="10"/>
+			</c3>
+			<c4 id="12" n="Max Speed">
+				<pos x="-1.75" y="1"/>
+				<v text="50" value="50"/>
+			</c4>
+			<c5 id="14" name="Hardness">
+				<pos x="-1.75" y="0.5"/>
+				<min text="0"/>
+				<max text="1" value="1"/>
+				<int text="1" value="1"/>
+				<v text="0.2" value="0.2"/>
+			</c5>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="2">
+				<pos y="-1.25"/>
+			</c0>
+			<c1 id="3">
+				<pos x="-1.25" y="-1.25"/>
+			</c1>
+			<c2 id="6">
+				<pos x="4.75" y="-0.25"/>
+				<in1 component_id="11"/>
+			</c2>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

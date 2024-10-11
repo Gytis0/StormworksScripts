@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="RGB Lights" description="No description set." width="1" length="1" id_counter="6" id_counter_node="1" sym4="16382" sym6="7370" sym7="9514" sym8="7590" sym9="9258" sym10="7366" sym12="16382">
+	<nodes>
+		<n id="1" component_id="3">
+			<node label="Color Values" type="5" description="The input signal to be processed."/>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="4" script='speed = property.getNumber("Speed")
+
+Rup = false
+Gup = false
+Bup = false
+
+R = 255
+G = 170
+B = 85
+
+function onTick()
+	if (R &gt;= 255) then Rup = false
+	elseif (R &lt;= 0) then Rup = true
+	
+	if (G &gt;= 255) then Gup = false
+	elseif (G &lt;= 0) then Gup = true
+	
+	if (B &gt;= 255) then Bup = false
+	elseif (B &lt;= 0) then Bup = true
+	
+	if (Rup) then R = R + speed
+	else R = R - speed end
+	
+	if (Bup) then B = B + speed
+	else B = B - speed end
+	
+	if (Gup) then G = G + speed
+	else G = G - speed end
+	
+	output.setNumber(1, R)
+	output.setNumber(2, G)
+	output.setNumber(3, B)
+end'>
+					<pos y="-0.25"/>
+					<in1 component_id="6">
+						<v/>
+					</in1>
+					<in2>
+						<v/>
+					</in2>
+					<out1>
+						<v/>
+					</out1>
+					<out2>
+						<v/>
+					</out2>
+				</object>
+			</c>
+			<c type="19">
+				<object id="5" name="Speed">
+					<pos x="-2.5" y="-0.25"/>
+					<out1/>
+					<min text="0.1" value="0.1"/>
+					<max text="1000" value="1000"/>
+					<int text="1" value="1"/>
+					<v text="0.1" value="0.1"/>
+				</object>
+			</c>
+			<c type="40">
+				<object id="6" count="1">
+					<pos x="-1.25" y="-0.25"/>
+					<inc>
+						<v/>
+					</inc>
+					<in1 component_id="5"/>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="5">
+				<object id="3">
+					<pos x="1.25"/>
+					<in1 component_id="4">
+						<v/>
+					</in1>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="4" script='speed = property.getNumber("Speed")
+
+Rup = false
+Gup = false
+Bup = false
+
+R = 255
+G = 170
+B = 85
+
+function onTick()
+	if (R &gt;= 255) then Rup = false
+	elseif (R &lt;= 0) then Rup = true
+	
+	if (G &gt;= 255) then Gup = false
+	elseif (G &lt;= 0) then Gup = true
+	
+	if (B &gt;= 255) then Bup = false
+	elseif (B &lt;= 0) then Bup = true
+	
+	if (Rup) then R = R + speed
+	else R = R - speed end
+	
+	if (Bup) then B = B + speed
+	else B = B - speed end
+	
+	if (Gup) then G = G + speed
+	else G = G - speed end
+	
+	output.setNumber(1, R)
+	output.setNumber(2, G)
+	output.setNumber(3, B)
+end'>
+				<pos y="-0.25"/>
+				<in1 component_id="6">
+					<v/>
+				</in1>
+				<in2>
+					<v/>
+				</in2>
+				<out1>
+					<v/>
+				</out1>
+				<out2>
+					<v/>
+				</out2>
+			</c0>
+			<c1 id="5" name="Speed">
+				<pos x="-2.5" y="-0.25"/>
+				<out1/>
+				<min text="0.1" value="0.1"/>
+				<max text="1000" value="1000"/>
+				<int text="1" value="1"/>
+				<v text="0.1" value="0.1"/>
+			</c1>
+			<c2 id="6" count="1">
+				<pos x="-1.25" y="-0.25"/>
+				<inc>
+					<v/>
+				</inc>
+				<in1 component_id="5"/>
+				<out1>
+					<v/>
+				</out1>
+			</c2>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="3">
+				<pos x="1.25"/>
+				<in1 component_id="4">
+					<v/>
+				</in1>
+				<out1>
+					<v/>
+				</out1>
+			</c0>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

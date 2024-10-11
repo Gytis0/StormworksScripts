@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Door Opener" description="No description set." width="6" length="2" id_counter="56" id_counter_node="12" sym2="6526" sym3="9346" sym4="9346" sym5="6526" sym7="9216" sym8="6144" sym9="9216" sym10="9216" sym11="9216" sym12="9216" sym13="9216" sym14="15360">
+	<nodes>
+		<n id="1" component_id="1">
+			<node label="1st Door" mode="1" description="The input signal to be processed."/>
+		</n>
+		<n id="2" component_id="2">
+			<node label="2nd Door" mode="1" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="3" component_id="3">
+			<node label="3rd Door" mode="1" description="The input signal to be processed.">
+				<position x="2"/>
+			</node>
+		</n>
+		<n id="4" component_id="4">
+			<node label="4th Door" mode="1" description="The input signal to be processed.">
+				<position x="3"/>
+			</node>
+		</n>
+		<n id="5" component_id="16">
+			<node label="1st Door Pivot" type="1" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="6" component_id="15">
+			<node label="2nd Door Pivot" type="1" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+		<n id="7" component_id="14">
+			<node label="3rd Door Pivot" type="1" description="The input signal to be processed.">
+				<position x="2" z="1"/>
+			</node>
+		</n>
+		<n id="8" component_id="13">
+			<node label="4th Door Pivot" type="1" description="The input signal to be processed.">
+				<position x="3" z="1"/>
+			</node>
+		</n>
+		<n id="9" component_id="36">
+			<node label="5th Door" mode="1" description="The input signal to be processed.">
+				<position x="4"/>
+			</node>
+		</n>
+		<n id="10" component_id="37">
+			<node label="6th Door" mode="1" description="The input signal to be processed.">
+				<position x="5"/>
+			</node>
+		</n>
+		<n id="11" component_id="42">
+			<node label="5th Door Pivot" type="1" description="The input signal to be processed.">
+				<position x="4" z="1"/>
+			</node>
+		</n>
+		<n id="12" component_id="43">
+			<node label="6th Door Pivot" type="1" description="The input signal to be processed.">
+				<position x="5" z="1"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="19">
+				<object id="18" name="1st Door Degrees">
+					<pos x="-7" y="0.25"/>
+					<out1 v="90"/>
+					<min text="0"/>
+					<max text="180" value="180"/>
+					<int text="1" value="1"/>
+					<v text="90" value="90"/>
+				</object>
+			</c>
+			<c type="19">
+				<object id="23" name="2nd Door Degrees">
+					<pos x="-7" y="-0.75"/>
+					<out1 v="90"/>
+					<min text="0"/>
+					<max text="180" value="180"/>
+					<int text="1" value="1"/>
+					<v text="90" value="90"/>
+				</object>
+			</c>
+			<c type="19">
+				<object id="24" name="3rd Door Degrees">
+					<pos x="-7" y="-1.75"/>
+					<out1 v="90"/>
+					<min text="0"/>
+					<max text="180" value="180"/>
+					<int text="1" value="1"/>
+					<v text="90" value="90"/>
+				</object>
+			</c>
+			<c type="19">
+				<object id="25" name="4th Door Degrees">
+					<pos x="-7" y="-2.75"/>
+					<out1 v="90"/>
+					<min text="0"/>
+					<max text="180" value="180"/>
+					<int text="1" value="1"/>
+					<v text="90" value="90"/>
+				</object>
+			</c>
+			<c type="9">
+				<object id="26">
+					<pos x="-2.75"/>
+					<in1 component_id="50"/>
+					<in2 component_id="30" v="360"/>
+				</object>
+			</c>
+			<c type="9">
+				<object id="27">
+					<pos x="-2.75" y="-1"/>
+					<in1 component_id="51"/>
+					<in2 component_id="30" v="360"/>
+				</object>
+			</c>
+			<c type="9">
+				<object id="28">
+					<pos x="-2.75" y="-2"/>
+					<in1 component_id="52"/>
+					<in2 component_id="30" v="360"/>
+				</object>
+			</c>
+			<c type="9">
+				<object id="29">
+					<pos x="-2.75" y="-3"/>
+					<in1 component_id="53"/>
+					<in2 component_id="30" v="360"/>
+				</object>
+			</c>
+			<c type="15">
+				<object id="30">
+					<pos x="-3.75" y="-6"/>
+					<out1 v="360"/>
+					<n text="90" value="90"/>
+				</object>
+			</c>
+			<c type="22">
+				<object id="31">
+					<pos x="1.75" y="-0.25"/>
+					<in1 component_id="26"/>
+					<in2 component_id="35" v="-0.25"/>
+					<in3 component_id="1"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c type="22">
+				<object id="32">
+					<pos x="1.75" y="-1.25"/>
+					<in1 component_id="27"/>
+					<in2 component_id="35" v="-0.25"/>
+					<in3 component_id="2"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c type="22">
+				<object id="33">
+					<pos x="1.75" y="-2.25"/>
+					<in1 component_id="28"/>
+					<in2 component_id="35" v="-0.25"/>
+					<in3 component_id="3"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c type="22">
+				<object id="34">
+					<pos x="1.75" y="-3.25"/>
+					<in1 component_id="29"/>
+					<in2 component_id="35" v="-0.25"/>
+					<in3 component_id="4"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c type="15">
+				<object id="35">
+					<pos x="0.75" y="-6"/>
+					<out1 v="-0.25"/>
+					<n text="-1" value="-1"/>
+				</object>
+			</c>
+			<c type="19">
+				<object id="44" name="5th Door Degrees">
+					<pos x="-7" y="-3.75"/>
+					<out1 v="90"/>
+					<min text="0"/>
+					<max text="180" value="180"/>
+					<int text="1" value="1"/>
+					<v text="90" value="90"/>
+				</object>
+			</c>
+			<c type="19">
+				<object id="45" name="6th Door Degrees">
+					<pos x="-7" y="-4.75"/>
+					<out1 v="180"/>
+					<min text="0"/>
+					<max text="180" value="180"/>
+					<int text="1" value="1"/>
+					<v text="180" value="180"/>
+				</object>
+			</c>
+			<c type="9">
+				<object id="46">
+					<pos x="-2.75" y="-4"/>
+					<in1 component_id="54"/>
+					<in2 component_id="30" v="360"/>
+				</object>
+			</c>
+			<c type="9">
+				<object id="47">
+					<pos x="-2.75" y="-5"/>
+					<in1 component_id="55" v="90"/>
+					<in2 component_id="30" v="360"/>
+					<out1 v="0.25"/>
+				</object>
+			</c>
+			<c type="22">
+				<object id="48">
+					<pos x="1.75" y="-4.25"/>
+					<in1 component_id="46"/>
+					<in2 component_id="35" v="-0.25"/>
+					<in3 component_id="36"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c type="22">
+				<object id="49">
+					<pos x="1.75" y="-5.25"/>
+					<in1 component_id="47" v="0.25"/>
+					<in2 component_id="35" v="-0.25"/>
+					<in3 component_id="37"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c type="7">
+				<object id="50">
+					<pos x="-5"/>
+					<in1 component_id="18" v="90"/>
+					<in2 component_id="56" v="90"/>
+				</object>
+			</c>
+			<c type="7">
+				<object id="51">
+					<pos x="-5" y="-1"/>
+					<in1 component_id="23" v="90"/>
+					<in2 component_id="56" v="90"/>
+				</object>
+			</c>
+			<c type="7">
+				<object id="52">
+					<pos x="-5" y="-2"/>
+					<in1 component_id="24" v="90"/>
+					<in2 component_id="56" v="90"/>
+				</object>
+			</c>
+			<c type="7">
+				<object id="53">
+					<pos x="-5" y="-3"/>
+					<in1 component_id="25" v="90"/>
+					<in2 component_id="56" v="90"/>
+				</object>
+			</c>
+			<c type="7">
+				<object id="54">
+					<pos x="-5" y="-4"/>
+					<in1 component_id="44" v="90"/>
+					<in2 component_id="56" v="90"/>
+				</object>
+			</c>
+			<c type="7">
+				<object id="55">
+					<pos x="-5" y="-5"/>
+					<in1 component_id="45" v="180"/>
+					<in2 component_id="56" v="90"/>
+					<out1 v="90"/>
+				</object>
+			</c>
+			<c type="15">
+				<object id="56">
+					<pos x="-6" y="-6"/>
+					<out1 v="90"/>
+					<n text="90" value="90"/>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c>
+				<object id="1">
+					<pos x="-0.25" y="-0.25"/>
+				</object>
+			</c>
+			<c>
+				<object id="2">
+					<pos x="-0.25" y="-1.25"/>
+				</object>
+			</c>
+			<c>
+				<object id="3">
+					<pos x="-0.25" y="-2.25"/>
+				</object>
+			</c>
+			<c>
+				<object id="4">
+					<pos x="-0.25" y="-3.25"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="13">
+					<pos x="3.25" y="-2.75"/>
+					<in1 component_id="34" v="-0.25"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="14">
+					<pos x="3.25" y="-1.75"/>
+					<in1 component_id="33" v="-0.25"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="15">
+					<pos x="3.25" y="-0.75"/>
+					<in1 component_id="32" v="-0.25"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="16">
+					<pos x="3.25" y="0.25"/>
+					<in1 component_id="31" v="-0.25"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c>
+				<object id="36">
+					<pos x="-0.25" y="-4.25"/>
+				</object>
+			</c>
+			<c>
+				<object id="37">
+					<pos x="-0.25" y="-5.25"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="42">
+					<pos x="3.25" y="-3.75"/>
+					<in1 component_id="48" v="-0.25"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="43">
+					<pos x="3.25" y="-4.75"/>
+					<in1 component_id="49" v="-0.25"/>
+					<out1 v="-0.25"/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="18" name="1st Door Degrees">
+				<pos x="-7" y="0.25"/>
+				<out1 v="90"/>
+				<min text="0"/>
+				<max text="180" value="180"/>
+				<int text="1" value="1"/>
+				<v text="90" value="90"/>
+			</c0>
+			<c1 id="23" name="2nd Door Degrees">
+				<pos x="-7" y="-0.75"/>
+				<out1 v="90"/>
+				<min text="0"/>
+				<max text="180" value="180"/>
+				<int text="1" value="1"/>
+				<v text="90" value="90"/>
+			</c1>
+			<c2 id="24" name="3rd Door Degrees">
+				<pos x="-7" y="-1.75"/>
+				<out1 v="90"/>
+				<min text="0"/>
+				<max text="180" value="180"/>
+				<int text="1" value="1"/>
+				<v text="90" value="90"/>
+			</c2>
+			<c3 id="25" name="4th Door Degrees">
+				<pos x="-7" y="-2.75"/>
+				<out1 v="90"/>
+				<min text="0"/>
+				<max text="180" value="180"/>
+				<int text="1" value="1"/>
+				<v text="90" value="90"/>
+			</c3>
+			<c4 id="26">
+				<pos x="-2.75"/>
+				<in1 component_id="50"/>
+				<in2 component_id="30" v="360"/>
+			</c4>
+			<c5 id="27">
+				<pos x="-2.75" y="-1"/>
+				<in1 component_id="51"/>
+				<in2 component_id="30" v="360"/>
+			</c5>
+			<c6 id="28">
+				<pos x="-2.75" y="-2"/>
+				<in1 component_id="52"/>
+				<in2 component_id="30" v="360"/>
+			</c6>
+			<c7 id="29">
+				<pos x="-2.75" y="-3"/>
+				<in1 component_id="53"/>
+				<in2 component_id="30" v="360"/>
+			</c7>
+			<c8 id="30">
+				<pos x="-3.75" y="-6"/>
+				<out1 v="360"/>
+				<n text="90" value="90"/>
+			</c8>
+			<c9 id="31">
+				<pos x="1.75" y="-0.25"/>
+				<in1 component_id="26"/>
+				<in2 component_id="35" v="-0.25"/>
+				<in3 component_id="1"/>
+				<out1 v="-0.25"/>
+			</c9>
+			<c10 id="32">
+				<pos x="1.75" y="-1.25"/>
+				<in1 component_id="27"/>
+				<in2 component_id="35" v="-0.25"/>
+				<in3 component_id="2"/>
+				<out1 v="-0.25"/>
+			</c10>
+			<c11 id="33">
+				<pos x="1.75" y="-2.25"/>
+				<in1 component_id="28"/>
+				<in2 component_id="35" v="-0.25"/>
+				<in3 component_id="3"/>
+				<out1 v="-0.25"/>
+			</c11>
+			<c12 id="34">
+				<pos x="1.75" y="-3.25"/>
+				<in1 component_id="29"/>
+				<in2 component_id="35" v="-0.25"/>
+				<in3 component_id="4"/>
+				<out1 v="-0.25"/>
+			</c12>
+			<c13 id="35">
+				<pos x="0.75" y="-6"/>
+				<out1 v="-0.25"/>
+				<n text="-1" value="-1"/>
+			</c13>
+			<c14 id="44" name="5th Door Degrees">
+				<pos x="-7" y="-3.75"/>
+				<out1 v="90"/>
+				<min text="0"/>
+				<max text="180" value="180"/>
+				<int text="1" value="1"/>
+				<v text="90" value="90"/>
+			</c14>
+			<c15 id="45" name="6th Door Degrees">
+				<pos x="-7" y="-4.75"/>
+				<out1 v="180"/>
+				<min text="0"/>
+				<max text="180" value="180"/>
+				<int text="1" value="1"/>
+				<v text="180" value="180"/>
+			</c15>
+			<c16 id="46">
+				<pos x="-2.75" y="-4"/>
+				<in1 component_id="54"/>
+				<in2 component_id="30" v="360"/>
+			</c16>
+			<c17 id="47">
+				<pos x="-2.75" y="-5"/>
+				<in1 component_id="55" v="90"/>
+				<in2 component_id="30" v="360"/>
+				<out1 v="0.25"/>
+			</c17>
+			<c18 id="48">
+				<pos x="1.75" y="-4.25"/>
+				<in1 component_id="46"/>
+				<in2 component_id="35" v="-0.25"/>
+				<in3 component_id="36"/>
+				<out1 v="-0.25"/>
+			</c18>
+			<c19 id="49">
+				<pos x="1.75" y="-5.25"/>
+				<in1 component_id="47" v="0.25"/>
+				<in2 component_id="35" v="-0.25"/>
+				<in3 component_id="37"/>
+				<out1 v="-0.25"/>
+			</c19>
+			<c20 id="50">
+				<pos x="-5"/>
+				<in1 component_id="18" v="90"/>
+				<in2 component_id="56" v="90"/>
+			</c20>
+			<c21 id="51">
+				<pos x="-5" y="-1"/>
+				<in1 component_id="23" v="90"/>
+				<in2 component_id="56" v="90"/>
+			</c21>
+			<c22 id="52">
+				<pos x="-5" y="-2"/>
+				<in1 component_id="24" v="90"/>
+				<in2 component_id="56" v="90"/>
+			</c22>
+			<c23 id="53">
+				<pos x="-5" y="-3"/>
+				<in1 component_id="25" v="90"/>
+				<in2 component_id="56" v="90"/>
+			</c23>
+			<c24 id="54">
+				<pos x="-5" y="-4"/>
+				<in1 component_id="44" v="90"/>
+				<in2 component_id="56" v="90"/>
+			</c24>
+			<c25 id="55">
+				<pos x="-5" y="-5"/>
+				<in1 component_id="45" v="180"/>
+				<in2 component_id="56" v="90"/>
+				<out1 v="90"/>
+			</c25>
+			<c26 id="56">
+				<pos x="-6" y="-6"/>
+				<out1 v="90"/>
+				<n text="90" value="90"/>
+			</c26>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="1">
+				<pos x="-0.25" y="-0.25"/>
+			</c0>
+			<c1 id="2">
+				<pos x="-0.25" y="-1.25"/>
+			</c1>
+			<c2 id="3">
+				<pos x="-0.25" y="-2.25"/>
+			</c2>
+			<c3 id="4">
+				<pos x="-0.25" y="-3.25"/>
+			</c3>
+			<c4 id="13">
+				<pos x="3.25" y="-2.75"/>
+				<in1 component_id="34" v="-0.25"/>
+				<out1 v="-0.25"/>
+			</c4>
+			<c5 id="14">
+				<pos x="3.25" y="-1.75"/>
+				<in1 component_id="33" v="-0.25"/>
+				<out1 v="-0.25"/>
+			</c5>
+			<c6 id="15">
+				<pos x="3.25" y="-0.75"/>
+				<in1 component_id="32" v="-0.25"/>
+				<out1 v="-0.25"/>
+			</c6>
+			<c7 id="16">
+				<pos x="3.25" y="0.25"/>
+				<in1 component_id="31" v="-0.25"/>
+				<out1 v="-0.25"/>
+			</c7>
+			<c8 id="36">
+				<pos x="-0.25" y="-4.25"/>
+			</c8>
+			<c9 id="37">
+				<pos x="-0.25" y="-5.25"/>
+			</c9>
+			<c10 id="42">
+				<pos x="3.25" y="-3.75"/>
+				<in1 component_id="48" v="-0.25"/>
+				<out1 v="-0.25"/>
+			</c10>
+			<c11 id="43">
+				<pos x="3.25" y="-4.75"/>
+				<in1 component_id="49" v="-0.25"/>
+				<out1 v="-0.25"/>
+			</c11>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

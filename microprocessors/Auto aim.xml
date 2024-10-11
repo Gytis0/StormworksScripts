@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Auto-Aim" description="Micro used for auto aiming at targets" width="2" length="4" id_counter="133" id_counter_node="31" sym1="384" sym2="384" sym3="960" sym4="1632" sym5="3120" sym6="6168" sym7="29070" sym8="29070" sym9="6168" sym10="3120" sym11="1632" sym12="960" sym13="384" sym14="384">
+	<nodes>
+		<n id="2" component_id="4">
+			<node label="Radar Info" mode="1" type="5" description="The input signal to be processed."/>
+		</n>
+		<n id="19" component_id="88">
+			<node label="Horizontal speed" type="1" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+		<n id="20" component_id="91">
+			<node label="Vertical speed" type="1" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="24" component_id="112">
+			<node label="Horizontal rotation" mode="1" type="1" description="The input signal to be processed.">
+				<position x="1" z="3"/>
+			</node>
+		</n>
+		<n id="25" component_id="113">
+			<node label="Vertical rotation" mode="1" type="1" description="The input signal to be processed.">
+				<position z="2"/>
+			</node>
+		</n>
+		<n id="26" component_id="121">
+			<node label="Controls LEFT/RIGHT" mode="1" type="1" description="The input signal to be processed.">
+				<position x="1" z="2"/>
+			</node>
+		</n>
+		<n id="27" component_id="120">
+			<node label="Controls UP/DOWN" mode="1" type="1" description="The input signal to be processed.">
+				<position z="3"/>
+			</node>
+		</n>
+		<n id="28" component_id="122">
+			<node label="Lock" mode="1" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="105" script='rotationSpeed = property.getNumber("Rotation Speed")
+controlSpeed = property.getNumber("Controls Sensitivity") / 100
+locked = false
+lock = false
+lastLock = false
+desiredH = 0
+desiredV = 0
+fovXsize = 0.2
+fovYsize = 0.2
+
+function rotDistance(desired, current)
+	return math.abs(current - desired) / 0.05
+end
+
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
+function interpolation(start, finish, perc)
+	return start + ((finish - start) * perc)
+end
+
+function onTick()
+	--get inputs
+	targetOnScreen = input.getBool(1)
+	lock = input.getBool(2)
+	
+	distance = input.getNumber(1)
+	azimuth = round(input.getNumber(2), 3)
+	elevation = round(input.getNumber(3), 3)
+	
+	horizontalControl = input.getNumber(28)
+	verticalControl = input.getNumber(29)
+
+	rotH = round(input.getNumber(30), 3)
+	rotV = round(input.getNumber(31), 3)
+	
+	--compute controls
+	if lastLock ~= lock then
+		locked = lock
+	end
+	
+	if not locked then
+		desiredH = desiredH + horizontalControl * controlSpeed
+		desiredV = desiredV + verticalControl * controlSpeed
+	elseif targetOnScreen then
+		desiredH = rotH + azimuth
+		desiredV = rotV + elevation
+	end
+	
+	--rotate the gun
+	if rotH &gt; desiredH then horizontalSpeed = -rotationSpeed * rotDistance(desiredH, rotH)
+	elseif rotH &lt; desiredH then horizontalSpeed = rotationSpeed * rotDistance(desiredH, rotH)
+	else horizontalSpeed = 0
+	end
+	
+	if rotV &gt; desiredV then verticalSpeed = -rotationSpeed * rotDistance(desiredV, rotV)
+	elseif rotV &lt; desiredV then verticalSpeed = rotationSpeed * rotDistance(desiredV, rotV)
+	else verticalSpeed = 0
+	end
+
+	output.setNumber(1, horizontalSpeed)
+	output.setNumber(2, verticalSpeed)
+	
+	lastLock = lock
+end'>
+					<pos x="4.25" y="-1"/>
+					<in1 component_id="123">
+						<v bools="2" 30="-0.091788" 31="0.147414"/>
+					</in1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="107">
+					<pos x="5.75" y="-0.25"/>
+					<in1 component_id="105">
+						<v 02="-0.06"/>
+					</in1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="108" i="1">
+					<pos x="5.75" y="-0.75"/>
+					<in1 component_id="105">
+						<v 02="-0.06"/>
+					</in1>
+					<out1 v="-0.06"/>
+				</object>
+			</c>
+			<c type="40">
+				<object id="114" count="5" offset="27">
+					<pos x="0.5" y="-1.5"/>
+					<inc component_id="4"/>
+					<in1 component_id="121"/>
+					<in2 component_id="120"/>
+					<in3 component_id="112" v="-0.091788"/>
+					<in4 component_id="113" v="0.147122"/>
+					<in5 disabled="true"/>
+					<out1>
+						<v 30="-0.091788" 31="0.147122"/>
+					</out1>
+				</object>
+			</c>
+			<c type="34">
+				<object id="115" n="Rotation Speed">
+					<pos x="-1" y="1.75"/>
+					<out1 v="3"/>
+					<v text="3" value="3"/>
+				</object>
+			</c>
+			<c type="19">
+				<object id="117" name="Controls Sensitivity">
+					<pos x="-1" y="1.25"/>
+					<out1 v="0.1"/>
+					<min text="0.1" value="0.1"/>
+					<max text="2" value="2"/>
+					<int text="1" value="1"/>
+					<v text="0" value="0.1"/>
+				</object>
+			</c>
+			<c type="41">
+				<object id="123" count="1" offset="1">
+					<pos x="3" y="-0.5"/>
+					<inc component_id="114">
+						<v 30="-0.091788" 31="0.147273"/>
+					</inc>
+					<in1 component_id="122" v="true"/>
+					<out1>
+						<v bools="2" 30="-0.091788" 31="0.147273"/>
+					</out1>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c type="4">
+				<object id="4">
+					<pos x="-1" y="-0.25"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="88">
+					<pos x="7" y="-0.25"/>
+					<in1 component_id="107"/>
+				</object>
+			</c>
+			<c type="3">
+				<object id="91">
+					<pos x="7" y="-0.75"/>
+					<in1 component_id="108" v="-0.06"/>
+					<out1 v="-0.06"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="112">
+					<pos x="-1" y="-1.75"/>
+					<in1 v="-0.091788"/>
+					<out1 v="-0.091788"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="113">
+					<pos x="-1" y="-2.25"/>
+					<in1 v="0.147122"/>
+					<out1 v="0.147122"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="120">
+					<pos x="-1" y="-1.25"/>
+				</object>
+			</c>
+			<c type="2">
+				<object id="121">
+					<pos x="-1" y="-0.75"/>
+				</object>
+			</c>
+			<c>
+				<object id="122">
+					<pos x="1.75" y="-1"/>
+					<in1 v="true"/>
+					<out1 v="true"/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="105" script='rotationSpeed = property.getNumber("Rotation Speed")
+controlSpeed = property.getNumber("Controls Sensitivity") / 100
+locked = false
+lock = false
+lastLock = false
+desiredH = 0
+desiredV = 0
+fovXsize = 0.2
+fovYsize = 0.2
+
+function rotDistance(desired, current)
+	return math.abs(current - desired) / 0.05
+end
+
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
+function interpolation(start, finish, perc)
+	return start + ((finish - start) * perc)
+end
+
+function onTick()
+	--get inputs
+	targetOnScreen = input.getBool(1)
+	lock = input.getBool(2)
+	
+	distance = input.getNumber(1)
+	azimuth = round(input.getNumber(2), 3)
+	elevation = round(input.getNumber(3), 3)
+	
+	horizontalControl = input.getNumber(28)
+	verticalControl = input.getNumber(29)
+
+	rotH = round(input.getNumber(30), 3)
+	rotV = round(input.getNumber(31), 3)
+	
+	--compute controls
+	if lastLock ~= lock then
+		locked = lock
+	end
+	
+	if not locked then
+		desiredH = desiredH + horizontalControl * controlSpeed
+		desiredV = desiredV + verticalControl * controlSpeed
+	elseif targetOnScreen then
+		desiredH = rotH + azimuth
+		desiredV = rotV + elevation
+	end
+	
+	--rotate the gun
+	if rotH &gt; desiredH then horizontalSpeed = -rotationSpeed * rotDistance(desiredH, rotH)
+	elseif rotH &lt; desiredH then horizontalSpeed = rotationSpeed * rotDistance(desiredH, rotH)
+	else horizontalSpeed = 0
+	end
+	
+	if rotV &gt; desiredV then verticalSpeed = -rotationSpeed * rotDistance(desiredV, rotV)
+	elseif rotV &lt; desiredV then verticalSpeed = rotationSpeed * rotDistance(desiredV, rotV)
+	else verticalSpeed = 0
+	end
+
+	output.setNumber(1, horizontalSpeed)
+	output.setNumber(2, verticalSpeed)
+	
+	lastLock = lock
+end'>
+				<pos x="4.25" y="-1"/>
+				<in1 component_id="123">
+					<v bools="2" 30="-0.091788" 31="0.147414"/>
+				</in1>
+			</c0>
+			<c1 id="107">
+				<pos x="5.75" y="-0.25"/>
+				<in1 component_id="105">
+					<v 02="-0.06"/>
+				</in1>
+			</c1>
+			<c2 id="108" i="1">
+				<pos x="5.75" y="-0.75"/>
+				<in1 component_id="105">
+					<v 02="-0.06"/>
+				</in1>
+				<out1 v="-0.06"/>
+			</c2>
+			<c3 id="114" count="5" offset="27">
+				<pos x="0.5" y="-1.5"/>
+				<inc component_id="4"/>
+				<in1 component_id="121"/>
+				<in2 component_id="120"/>
+				<in3 component_id="112" v="-0.091788"/>
+				<in4 component_id="113" v="0.147122"/>
+				<in5 disabled="true"/>
+				<out1>
+					<v 30="-0.091788" 31="0.147122"/>
+				</out1>
+			</c3>
+			<c4 id="115" n="Rotation Speed">
+				<pos x="-1" y="1.75"/>
+				<out1 v="3"/>
+				<v text="3" value="3"/>
+			</c4>
+			<c5 id="117" name="Controls Sensitivity">
+				<pos x="-1" y="1.25"/>
+				<out1 v="0.1"/>
+				<min text="0.1" value="0.1"/>
+				<max text="2" value="2"/>
+				<int text="1" value="1"/>
+				<v text="0" value="0.1"/>
+			</c5>
+			<c6 id="123" count="1" offset="1">
+				<pos x="3" y="-0.5"/>
+				<inc component_id="114">
+					<v 30="-0.091788" 31="0.147273"/>
+				</inc>
+				<in1 component_id="122" v="true"/>
+				<out1>
+					<v bools="2" 30="-0.091788" 31="0.147273"/>
+				</out1>
+			</c6>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="4">
+				<pos x="-1" y="-0.25"/>
+			</c0>
+			<c1 id="88">
+				<pos x="7" y="-0.25"/>
+				<in1 component_id="107"/>
+			</c1>
+			<c2 id="91">
+				<pos x="7" y="-0.75"/>
+				<in1 component_id="108" v="-0.06"/>
+				<out1 v="-0.06"/>
+			</c2>
+			<c3 id="112">
+				<pos x="-1" y="-1.75"/>
+				<in1 v="-0.091788"/>
+				<out1 v="-0.091788"/>
+			</c3>
+			<c4 id="113">
+				<pos x="-1" y="-2.25"/>
+				<in1 v="0.147122"/>
+				<out1 v="0.147122"/>
+			</c4>
+			<c5 id="120">
+				<pos x="-1" y="-1.25"/>
+			</c5>
+			<c6 id="121">
+				<pos x="-1" y="-0.75"/>
+			</c6>
+			<c7 id="122">
+				<pos x="1.75" y="-1"/>
+				<in1 v="true"/>
+				<out1 v="true"/>
+			</c7>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+

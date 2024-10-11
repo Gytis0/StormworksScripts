@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microprocessor name="Gearbox controller" description="No description set." width="3" length="3" id_counter="33" id_counter_node="10" sym0="10510" sym1="10498" sym2="6606" sym3="10568" sym4="6478" sym6="4228" sym7="132" sym8="8188" sym9="4228" sym11="14788" sym12="8452" sym13="14788" sym14="2308" sym15="14788">
+	<nodes>
+		<n id="1" component_id="1">
+			<node label="Gear Up" mode="1" description="The input signal to be processed."/>
+		</n>
+		<n id="2" component_id="2">
+			<node label="Gear Down" mode="1" description="The input signal to be processed.">
+				<position z="1"/>
+			</node>
+		</n>
+		<n id="3" component_id="3">
+			<node label="Neutral" mode="1" description="The input signal to be processed.">
+				<position x="1"/>
+			</node>
+		</n>
+		<n id="5" component_id="12">
+			<node label="Display" type="6" description="The input signal to be processed.">
+				<position x="1" z="1"/>
+			</node>
+		</n>
+		<n id="6" component_id="15">
+			<node label="Current Gear" type="1" description="The input signal to be processed.">
+				<position z="2"/>
+			</node>
+		</n>
+		<n id="7" component_id="27">
+			<node label="1st gear" description="The input signal to be processed.">
+				<position x="2"/>
+			</node>
+		</n>
+		<n id="8" component_id="33">
+			<node label="2nd gear" description="The input signal to be processed.">
+				<position x="2" z="1"/>
+			</node>
+		</n>
+		<n id="9" component_id="32">
+			<node label="3rd gear" description="The input signal to be processed.">
+				<position x="2" z="2"/>
+			</node>
+		</n>
+		<n id="10" component_id="31">
+			<node label="4th gear" description="The input signal to be processed.">
+				<position x="1" z="2"/>
+			</node>
+		</n>
+	</nodes>
+	<group>
+		<data>
+			<inputs/>
+			<outputs/>
+		</data>
+		<components>
+			<c type="56">
+				<object id="7" script='currentGear = 0
+lastUp = false
+lastNeutral = false
+lastUp = false
+
+
+-- Tick function that will be executed every logic tick
+function onTick()
+	currentUp = input.getBool(1)
+	currentNeutral = input.getBool(2)
+	currentDown = input.getBool(3)
+	
+	if(not lastUp and currentUp and currentGear &lt; 4)
+	then
+		currentGear = currentGear + 1
+	elseif(not lastDown and currentDown and currentGear &gt; 0)
+	then
+		currentGear = currentGear - 1
+	elseif(not lastNeutral and currentNeutral)
+	then
+		currentGear = 0
+	end
+	
+	output.setNumber(1, currentGear)
+	
+	lastUp = currentUp
+	lastNeutral = currentNeutral
+	lastDown = currentDown
+end
+
+-- Draw function that will be executed when this script renders to a screen
+function onDraw()
+	w = screen.getWidth()				  -- Get the screen&apos;s width and height
+	h = screen.getHeight()					
+	screen.setColor(0, 0, 0)			 -- Set draw color to green
+	
+	screen.drawTextBox(1, 1, w, h, string.format("Current Gear: "), h_align, v_align)
+end'>
+					<pos x="1.25" y="-0.75"/>
+					<in1 component_id="9">
+						<v/>
+					</in1>
+					<in2>
+						<v/>
+					</in2>
+					<out1>
+						<v/>
+					</out1>
+					<out2>
+						<v/>
+					</out2>
+				</object>
+			</c>
+			<c type="41">
+				<object id="9" count="3">
+					<pos y="-1.25"/>
+					<inc>
+						<v/>
+					</inc>
+					<in1 component_id="1"/>
+					<in2 component_id="3"/>
+					<in3 component_id="2"/>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+			<c type="31">
+				<object id="16">
+					<pos x="2.5" y="-0.25"/>
+					<in1 component_id="7">
+						<v/>
+					</in1>
+					<out1/>
+				</object>
+			</c>
+			<c type="17">
+				<object id="18">
+					<pos x="4.25" y="-1.5"/>
+					<in1 component_id="16"/>
+					<in2 component_id="19"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="15">
+				<object id="19">
+					<pos x="2.5" y="-1.5"/>
+					<out1/>
+					<n text="0"/>
+				</object>
+			</c>
+			<c type="17">
+				<object id="20">
+					<pos x="4.25" y="-2.25"/>
+					<in1 component_id="16"/>
+					<in2 component_id="23"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="17">
+				<object id="21">
+					<pos x="4.25" y="-3"/>
+					<in1 component_id="16"/>
+					<in2 component_id="24"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="17">
+				<object id="22">
+					<pos x="4.25" y="-3.75"/>
+					<in1 component_id="16"/>
+					<in2 component_id="25"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="15">
+				<object id="23">
+					<pos x="2.5" y="-2.25"/>
+					<out1/>
+					<n text="1" value="1"/>
+				</object>
+			</c>
+			<c type="15">
+				<object id="24">
+					<pos x="2.5" y="-3"/>
+					<out1/>
+					<n text="2" value="2"/>
+				</object>
+			</c>
+			<c type="15">
+				<object id="25">
+					<pos x="2.5" y="-3.75"/>
+					<out1/>
+					<n text="3" value="3"/>
+				</object>
+			</c>
+		</components>
+		<components_bridge>
+			<c>
+				<object id="1">
+					<pos x="-1.5" y="-0.5"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+			<c>
+				<object id="2">
+					<pos x="-1.5" y="-1.5"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+			<c>
+				<object id="3">
+					<pos x="-1.5" y="-1"/>
+					<in1/>
+					<out1/>
+				</object>
+			</c>
+			<c type="7">
+				<object id="12">
+					<pos x="2.5" y="-0.75"/>
+					<in1 component_id="7" node_index="1">
+						<v/>
+					</in1>
+					<out1>
+						<v/>
+					</out1>
+				</object>
+			</c>
+			<c type="3">
+				<object id="15">
+					<pos x="3.75" y="-0.25"/>
+					<in1 component_id="16"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="1">
+				<object id="27">
+					<pos x="5.75" y="-1.25"/>
+					<in1 component_id="18"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="1">
+				<object id="31">
+					<pos x="5.75" y="-3.5"/>
+					<in1 component_id="22"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="1">
+				<object id="32">
+					<pos x="5.75" y="-2.75"/>
+					<in1 component_id="21"/>
+					<out1/>
+				</object>
+			</c>
+			<c type="1">
+				<object id="33">
+					<pos x="5.75" y="-2"/>
+					<in1 component_id="20"/>
+					<out1/>
+				</object>
+			</c>
+		</components_bridge>
+		<groups/>
+		<component_states>
+			<c0 id="7" script='currentGear = 0
+lastUp = false
+lastNeutral = false
+lastUp = false
+
+
+-- Tick function that will be executed every logic tick
+function onTick()
+	currentUp = input.getBool(1)
+	currentNeutral = input.getBool(2)
+	currentDown = input.getBool(3)
+	
+	if(not lastUp and currentUp and currentGear &lt; 4)
+	then
+		currentGear = currentGear + 1
+	elseif(not lastDown and currentDown and currentGear &gt; 0)
+	then
+		currentGear = currentGear - 1
+	elseif(not lastNeutral and currentNeutral)
+	then
+		currentGear = 0
+	end
+	
+	output.setNumber(1, currentGear)
+	
+	lastUp = currentUp
+	lastNeutral = currentNeutral
+	lastDown = currentDown
+end
+
+-- Draw function that will be executed when this script renders to a screen
+function onDraw()
+	w = screen.getWidth()				  -- Get the screen&apos;s width and height
+	h = screen.getHeight()					
+	screen.setColor(0, 0, 0)			 -- Set draw color to green
+	
+	screen.drawTextBox(1, 1, w, h, string.format("Current Gear: "), h_align, v_align)
+end'>
+				<pos x="1.25" y="-0.75"/>
+				<in1 component_id="9">
+					<v/>
+				</in1>
+				<in2>
+					<v/>
+				</in2>
+				<out1>
+					<v/>
+				</out1>
+				<out2>
+					<v/>
+				</out2>
+			</c0>
+			<c1 id="9" count="3">
+				<pos y="-1.25"/>
+				<inc>
+					<v/>
+				</inc>
+				<in1 component_id="1"/>
+				<in2 component_id="3"/>
+				<in3 component_id="2"/>
+				<out1>
+					<v/>
+				</out1>
+			</c1>
+			<c2 id="16">
+				<pos x="2.5" y="-0.25"/>
+				<in1 component_id="7">
+					<v/>
+				</in1>
+				<out1/>
+			</c2>
+			<c3 id="18">
+				<pos x="4.25" y="-1.5"/>
+				<in1 component_id="16"/>
+				<in2 component_id="19"/>
+				<out1/>
+			</c3>
+			<c4 id="19">
+				<pos x="2.5" y="-1.5"/>
+				<out1/>
+				<n text="0"/>
+			</c4>
+			<c5 id="20">
+				<pos x="4.25" y="-2.25"/>
+				<in1 component_id="16"/>
+				<in2 component_id="23"/>
+				<out1/>
+			</c5>
+			<c6 id="21">
+				<pos x="4.25" y="-3"/>
+				<in1 component_id="16"/>
+				<in2 component_id="24"/>
+				<out1/>
+			</c6>
+			<c7 id="22">
+				<pos x="4.25" y="-3.75"/>
+				<in1 component_id="16"/>
+				<in2 component_id="25"/>
+				<out1/>
+			</c7>
+			<c8 id="23">
+				<pos x="2.5" y="-2.25"/>
+				<out1/>
+				<n text="1" value="1"/>
+			</c8>
+			<c9 id="24">
+				<pos x="2.5" y="-3"/>
+				<out1/>
+				<n text="2" value="2"/>
+			</c9>
+			<c10 id="25">
+				<pos x="2.5" y="-3.75"/>
+				<out1/>
+				<n text="3" value="3"/>
+			</c10>
+		</component_states>
+		<component_bridge_states>
+			<c0 id="1">
+				<pos x="-1.5" y="-0.5"/>
+				<in1/>
+				<out1/>
+			</c0>
+			<c1 id="2">
+				<pos x="-1.5" y="-1.5"/>
+				<in1/>
+				<out1/>
+			</c1>
+			<c2 id="3">
+				<pos x="-1.5" y="-1"/>
+				<in1/>
+				<out1/>
+			</c2>
+			<c3 id="12">
+				<pos x="2.5" y="-0.75"/>
+				<in1 component_id="7" node_index="1">
+					<v/>
+				</in1>
+				<out1>
+					<v/>
+				</out1>
+			</c3>
+			<c4 id="15">
+				<pos x="3.75" y="-0.25"/>
+				<in1 component_id="16"/>
+				<out1/>
+			</c4>
+			<c5 id="27">
+				<pos x="5.75" y="-1.25"/>
+				<in1 component_id="18"/>
+				<out1/>
+			</c5>
+			<c6 id="31">
+				<pos x="5.75" y="-3.5"/>
+				<in1 component_id="22"/>
+				<out1/>
+			</c6>
+			<c7 id="32">
+				<pos x="5.75" y="-2.75"/>
+				<in1 component_id="21"/>
+				<out1/>
+			</c7>
+			<c8 id="33">
+				<pos x="5.75" y="-2"/>
+				<in1 component_id="20"/>
+				<out1/>
+			</c8>
+		</component_bridge_states>
+		<group_states/>
+	</group>
+</microprocessor>
+
